@@ -1,74 +1,137 @@
 {% extends "base.html" %}
-{% block title %}Track Complaint — Complainify{% endblock %}
+{% block title %}Track a Complaint — Complainify{% endblock %}
 {% block content %}
-<div class="min-h-screen flex flex-col">
-<header class="w-full bg-surface-white border-b border-outline-variant shadow-sm">
-<nav class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-<div class="flex items-center gap-2">
-<a href="{{ url_for('dashboard_redirect') }}" class="flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">gavel</span></span><span class="text-xl font-bold text-primary tracking-tight">Complainify</span></a>
-</div>
-<div class="flex items-center gap-4">
-<a href="{{ url_for('student_login') }}" class="text-sm font-semibold text-primary hover:opacity-80">Login</a>
-<a href="{{ url_for('student_register') }}" class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-90">Sign Up</a>
-</div>
+<header class="nav">
+<div class="nav__inner">
+<a class="brand" href="{{ url_for('index') }}">
+<span class="brand__mark"><span class="material-symbols-outlined">gavel</span></span>
+<span>Complainify</span>
+</a>
+<nav class="nav__links">
+<a href="{{ url_for('index') }}#features">Features</a>
+<a href="{{ url_for('index') }}#how-it-works">How it works</a>
+<a class="is-active" href="{{ url_for('track_complaint') }}">Track</a>
 </nav>
+<div class="nav__actions">
+<a class="btn btn--ghost btn--sm" href="{{ url_for('student_login') }}">Login</a>
+<a class="btn btn--primary btn--sm" href="{{ url_for('student_register') }}">Get started</a>
+</div>
+</div>
 </header>
-<main class="flex-1 flex flex-col items-center px-4 py-12">
-<div class="w-full max-w-lg">
-<div class="bg-surface-white rounded-xl border border-outline-variant overflow-hidden shadow-sm mb-6">
-<div class="p-8 text-center">
-<div class="w-16 h-16 rounded-xl bg-surface-container flex items-center justify-center mx-auto mb-4"><span class="material-symbols-outlined text-3xl text-primary">search</span></div>
-<h2 class="text-2xl font-semibold text-primary mb-2">Track Your Complaint</h2>
-<p class="text-base text-on-surface-variant mb-6">Enter your ticket ID to check the status.</p>
-<form method="POST" class="space-y-4">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">confirmation_number</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm" name="ticket_id" placeholder="e.g. CMP-1024" type="text">
+
+<main class="section section--tight aurora">
+<div class="container container--narrow stack">
+
+<section class="card card--pad center anim-fade-up">
+<span class="icon-badge icon-badge--ai icon-badge--center"><span class="material-symbols-outlined">search</span></span>
+<h1 class="text-xl mt-4">Track your complaint</h1>
+<p class="muted text-sm mt-1">Enter the ticket ID from your confirmation email to view its live status.</p>
+<form method="POST" class="stack stack--sm mt-5">
+<div class="field" style="text-align:left">
+<label class="field__label" for="ticket_id">Ticket ID</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">confirmation_number</span>
+<input class="input" id="ticket_id" name="ticket_id" type="text" placeholder="e.g. CMP-1024" autocomplete="off" required>
 </div>
-<button class="w-full bg-primary text-on-primary text-sm font-semibold py-3.5 rounded-lg active:scale-95 transition-all shadow-sm hover:brightness-110" type="submit">Track Now</button>
+</div>
+<button class="btn btn--primary btn--lg btn--block" type="submit">
+<span class="material-symbols-outlined icon-sm">search</span> Track now
+</button>
 </form>
-</div>
-</div>
+</section>
+
+{% if request.method == 'POST' and not result %}
+<div class="form-message error">No complaint found with that ticket ID. Please check the ID and try again.</div>
+{% endif %}
+
 {% if result %}
 {% set is_resolved = result.status == 'Resolved' %}
 {% set is_in_progress = result.status == 'In Progress' %}
-<div class="bg-surface-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
-<div class="p-8">
-<div class="flex items-center justify-between mb-6">
-<div><h3 class="text-2xl font-semibold text-primary flex items-center gap-3">{{ result.ticket_id }}<button type="button" class="px-3 py-1.5 rounded-lg border border-primary/30 text-primary text-xs font-bold hover:bg-primary/10 transition-colors flex items-center gap-1" onclick="copyTicketId(this)" data-copy="{{ result.ticket_id }}"><span class="material-symbols-outlined text-sm">content_copy</span>Copy</button></h3><p class="text-xs text-on-surface-variant mt-1">Submitted {{ result.date }}</p></div>
-<span class="px-4 py-1.5 rounded-full text-sm font-semibold {% if is_resolved %}bg-on-tertiary-container/10 text-on-tertiary-container{% elif is_in_progress %}bg-secondary/10 text-secondary{% else %}bg-warning-amber/10 text-warning-amber{% endif %}">{{ result.status }}</span>
+{% set p = (result.priority or '')|lower %}
+<section class="card card--pad anim-fade-up anim-delay-1">
+<div class="between">
+<div>
+<h2 class="row">
+<span>{{ result.ticket_id }}</span>
+<button class="btn btn--outline btn--sm" type="button" onclick="copyTicketId(this)" data-copy="{{ result.ticket_id }}">
+<span class="material-symbols-outlined icon-sm">content_copy</span>Copy
+</button>
+</h2>
+<p class="muted text-xs mt-1">Submitted {{ result.date }}</p>
 </div>
-<div class="grid grid-cols-2 gap-4 mb-6">
-<div class="bg-surface rounded-lg p-4"><p class="text-xs text-on-surface-variant uppercase tracking-wider">Category</p><p class="text-sm font-semibold text-primary mt-1">{{ result.category }}</p></div>
-<div class="bg-surface rounded-lg p-4"><p class="text-xs text-on-surface-variant uppercase tracking-wider">Priority</p><span class="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-semibold {% if result.priority == 'High' %}bg-error-crimson/10 text-error-crimson{% elif result.priority == 'Medium' %}bg-warning-amber/10 text-warning-amber{% else %}bg-on-surface-variant/10 text-on-surface-variant{% endif %}">{{ result.priority }}{% if result.priority_score is not none %} <span class="text-on-surface-variant font-normal">({{ result.priority_score }})</span>{% endif %}</span>{% if result.priority_reason %}<p class="text-[10px] text-on-surface-variant mt-0.5">{{ result.priority_reason }}</p>{% endif %}</div>
-<div class="bg-surface rounded-lg p-4"><p class="text-xs text-on-surface-variant uppercase tracking-wider">Assigned To</p><p class="text-sm font-semibold text-primary mt-1">{{ result.assigned_to or 'Not assigned' }}</p></div>
-<div class="bg-surface rounded-lg p-4"><p class="text-xs text-on-surface-variant uppercase tracking-wider">Validated</p><p class="text-sm font-semibold text-primary mt-1">{% if result.validated %}Yes{% else %}Pending{% endif %}</p></div>
+<span class="badge {{ 'badge--green' if is_resolved else ('badge--blue' if is_in_progress else 'badge--amber') }}">{{ result.status }}</span>
 </div>
-<div class="mb-6 space-y-4">
-<div class="bg-surface rounded-lg p-4"><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-2">Subject</p><p class="text-sm font-semibold text-primary">{{ result.subject }}</p></div>
-<div class="bg-surface rounded-lg p-4"><p class="text-xs text-on-surface-variant uppercase tracking-wider mb-2">Description</p><p class="text-sm text-primary whitespace-pre-wrap leading-relaxed">{{ result.description }}</p></div>
+
+<div class="grid grid-2 gap-sm mt-5">
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">CATEGORY</p>
+<p class="fw-700 text-sm mt-1">{{ result.category }}</p>
+</div>
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">PRIORITY</p>
+<p class="mt-1"><span class="badge {{ 'badge--red' if ('critical' in p or 'high' in p) else ('badge--amber' if 'medium' in p else 'badge--green') }}">{{ result.priority or 'Not set' }}</span></p>
+</div>
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">ASSIGNED TO</p>
+<p class="fw-700 text-sm mt-1">{{ result.assigned_to or 'Not assigned' }}</p>
+</div>
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">VALIDATED</p>
+<p class="fw-700 text-sm mt-1">{% if result.validated %}Yes{% else %}Pending{% endif %}</p>
+</div>
+</div>
+
+<div class="stack stack--sm mt-5">
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">SUBJECT</p>
+<p class="fw-600 text-sm mt-1">{{ result.subject }}</p>
+</div>
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">DESCRIPTION</p>
+<p class="text-sm pre-wrap lh-relaxed mt-1">{{ result.description }}</p>
+</div>
 {% if result.student_attachment %}
-<div class="bg-surface rounded-lg p-4">
-<p class="text-xs text-on-surface-variant uppercase tracking-wider mb-2">Your Attachment</p>
-<a href="{{ url_for('uploaded_file', filename=result.student_attachment) }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
-<span class="material-symbols-outlined text-sm">attach_file</span>{{ result.student_attachment }}
-<span class="material-symbols-outlined text-xs">open_in_new</span>
+<div class="card card--flat card--pad">
+<p class="text-xs faint fw-700">YOUR ATTACHMENT</p>
+<a class="btn btn--outline btn--sm mt-2" href="{{ url_for('uploaded_file', filename=result.student_attachment) }}" target="_blank" rel="noopener">
+<span class="material-symbols-outlined icon-sm">attach_file</span>{{ result.student_attachment }}
+<span class="material-symbols-outlined icon-sm">open_in_new</span>
 </a>
 </div>
 {% endif %}
 </div>
+
 {% if result.admin_notes %}
-<div class="mb-4 p-4 bg-blue-50 rounded-lg"><p class="text-xs text-blue-700 uppercase tracking-wider mb-1">Admin Notes</p><p class="text-sm text-blue-900">{{ result.admin_notes }}</p></div>
-{% endif %}
-<div class="space-y-4">
-<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-on-tertiary-container/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm text-on-tertiary-container">check_circle</span></div><div><p class="text-sm font-semibold text-primary">Submitted</p><p class="text-xs text-on-surface-variant">{{ result.date }}</p></div></div>
-<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full {% if result.assigned_to %}bg-secondary/10{% else %}bg-warning-amber/10{% endif %} flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm {% if result.assigned_to %}text-secondary{% else %}text-warning-amber{% endif %}">assignment_ind</span></div><div><p class="text-sm font-semibold text-primary">{% if result.assigned_to %}Assigned to {{ result.assigned_to }}{% else %}Under Review{% endif %}</p><p class="text-xs text-on-surface-variant">{% if result.assigned_date %}{{ result.assigned_date }}{% else %}Awaiting assignment{% endif %}</p></div></div>
-<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full {% if is_in_progress and not is_resolved %}bg-secondary/10{% else %}bg-on-tertiary-container/10{% endif %} flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm {% if is_in_progress and not is_resolved %}text-secondary{% else %}text-on-tertiary-container{% endif %}">{% if is_resolved %}check_circle{% else %}pending{% endif %}</span></div><div><p class="text-sm font-semibold {% if is_in_progress and not is_resolved %}text-primary{% else %}text-on-tertiary-container{% endif %}">{% if is_resolved %}Resolved{% else %}In Progress{% endif %}</p><p class="text-xs text-on-surface-variant">{% if is_resolved and result.resolved_date %}{{ result.resolved_date }}{% elif is_in_progress and result.assigned_date %}Being handled by {{ result.assigned_to }}{% else %}Awaiting resolution{% endif %}</p></div></div>
-</div>
-</div>
+<div class="ai-banner mt-5">
+<span class="ai-banner__spark"><span class="material-symbols-outlined icon-sm">sticky_note_2</span></span>
+<p class="ai-banner__text"><b>Admin note:</b> {{ result.admin_notes }}</p>
 </div>
 {% endif %}
+
+<h3 class="mt-6">Resolution timeline</h3>
+<div class="timeline mt-4">
+<div class="timeline__item is-done">
+<span class="timeline__dot"></span>
+<p class="timeline__title">Submitted</p>
+<p class="timeline__meta">{{ result.date }}</p>
+</div>
+<div class="timeline__item {{ 'is-done' if result.assigned_to else 'is-active' }}">
+<span class="timeline__dot"></span>
+<p class="timeline__title">{% if result.assigned_to %}Assigned to {{ result.assigned_to }}{% else %}Under review{% endif %}</p>
+<p class="timeline__meta">{% if result.assigned_date %}{{ result.assigned_date }}{% else %}Awaiting assignment{% endif %}</p>
+</div>
+<div class="timeline__item {{ 'is-done' if is_resolved else ('is-active' if is_in_progress else '') }}">
+<span class="timeline__dot"></span>
+<p class="timeline__title">{% if is_resolved %}Resolved{% else %}In progress{% endif %}</p>
+<p class="timeline__meta">{% if is_resolved and result.resolved_date %}{{ result.resolved_date }}{% elif is_in_progress and result.assigned_to %}Being handled by {{ result.assigned_to }}{% else %}Awaiting resolution{% endif %}</p>
+</div>
+</div>
+</section>
+{% endif %}
+
+<p class="center muted text-xs">
+Lost your ticket ID? <a class="link" href="{{ url_for('student_login') }}">Sign in to your dashboard</a> to see every complaint you have filed.
+</p>
 </div>
 </main>
-</div>
 {% endblock %}

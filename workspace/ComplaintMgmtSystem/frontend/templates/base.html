@@ -1,32 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en" data-theme="light" class="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#022448">
 <title>{% block title %}Complainify — Complaint Management{% endblock %}</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<script>
+/* Theme bootstrap — runs before first paint so dark mode never flashes. */
+(function () {
+  try {
+    var saved = localStorage.getItem('complainify-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = saved || (prefersDark ? 'dark' : 'light');
+    var root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    root.classList.toggle('dark', theme === 'dark');
+    root.classList.toggle('light', theme === 'light');
+  } catch (err) {}
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+{# ---------------------------------------------------------------------------
+   SCAFFOLDING — kept alive only for templates that have not yet been migrated
+   to the Complainify design system. Once every template uses complainify.css,
+   delete: this Play CDN script, the tailwind.config block and the style.css
+   link. Nothing else in this file depends on them.
+--------------------------------------------------------------------------- #}
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
-tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#022448", "on-primary": "#ffffff", "primary-container": "#1e3a5f", "on-primary-container": "#8aa4cf", "primary-fixed-dim": "#adc8f5", secondary: "#0058be", "on-secondary": "#ffffff", "secondary-container": "#2170e4", "on-secondary-container": "#fefcff", tertiary: "#002a1a", "on-tertiary-container": "#10b981", surface: "#f8f9ff", "surface-bright": "#f8f9ff", "surface-container": "#e5eeff", "surface-container-low": "#eff4ff", "surface-container-high": "#dce9ff", "surface-white": "#FFFFFF", "on-surface": "#0b1c30", "on-surface-variant": "#43474e", "outline-variant": "#c4c6cf", "outline": "#74777f", "slate-bg": "#F1F5F9", "error": "#ba1a1a", "error-crimson": "#EF4444", "warning-amber": "#F59E0B", "text-ink": "#1E293B", "on-primary-fixed-variant": "#2d486d" }, fontFamily: { sans: ["Inter"] } } } };
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#022448", "on-primary": "#ffffff", "primary-container": "#1e3a5f", "on-primary-container": "#8aa4cf", "primary-fixed-dim": "#adc8f5", secondary: "#0058be", "on-secondary": "#ffffff", "secondary-container": "#2170e4", "on-secondary-container": "#fefcff", tertiary: "#002a1a", "on-tertiary-container": "#10b981", surface: "#f8f9ff", "surface-bright": "#f8f9ff", "surface-container": "#e5eeff", "surface-container-low": "#eff4ff", "surface-container-high": "#dce9ff", "surface-white": "#FFFFFF", "on-surface": "#0b1c30", "on-surface-variant": "#43474e", "outline-variant": "#c4c6cf", "outline": "#74777f", "slate-bg": "#F1F5F9", "error": "#ba1a1a", "error-crimson": "#EF4444", "warning-amber": "#F59E0B", "text-ink": "#1E293B", "on-primary-fixed-dim": "#2d486d" }, fontFamily: { sans: ["Inter"] } } } };
 </script>
-<style>body{font-family:'Inter',sans-serif}.material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24;display:inline-block;vertical-align:middle}
-.flash-msg{position:fixed;top:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.12);border:1px solid;max-width:420px;display:flex;align-items:center;gap:12px;animation:slideIn .3s ease, fadeOut .5s ease 8s forwards}
-.flash-msg.success{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
-.flash-msg.error{background:#fef2f2;color:#991b1b;border-color:#fecaca}
-.flash-msg.info{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
-.flash-copy-btn{flex-shrink:0;padding:4px 12px;border-radius:6px;border:1px solid currentColor;background:transparent;color:inherit;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all .15s}
-.flash-copy-btn:hover{background:rgba(0,0,0,0.06)}
-@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes fadeOut{to{opacity:0;transform:translateY(-10px)}}
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+{# Complainify design system — linked last so it wins over the legacy sheets. #}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/complainify.css') }}">
 {% block head %}{% endblock %}
 </head>
-<body class="bg-slate-bg text-on-surface font-sans antialiased min-h-screen flex flex-col">
+<body class="font-sans">
 {% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
+{# Pages that render their own inline `.form-message` set `hide_flashes = true`
+   so the same message is not shown twice. #}
+{% if messages and not hide_flashes %}
 {% for category, message in messages %}
 <div class="flash-msg {{ category }}">
 <span>{{ message }}</span>
@@ -35,7 +55,57 @@ tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#0
 {% endfor %}
 {% endif %}
 {% endwith %}
+{% block content %}{% endblock %}
+{% block footer %}
+<footer class="footer">
+<div class="container footer__inner">
+<div class="footer__grid">
+<div class="footer__brand">
+<a class="brand" href="{{ url_for('index') }}">
+<span class="brand__mark"><span class="material-symbols-outlined">gavel</span></span>
+<span>Complainify</span>
+</a>
+<p>AI-powered complaint resolution platform for higher education institutions. Bridging the gap between student feedback and administrative action.</p>
+<span class="badge badge--violet"><span class="material-symbols-outlined icon-sm">auto_awesome</span>Powered by DistilBERT NLP</span>
+</div>
+<div class="footer__col">
+<h6 class="footer__title">Product</h6>
+<a href="{{ url_for('index') }}#features">Features</a>
+<a href="{{ url_for('index') }}#how-it-works">How It Works</a>
+<a href="{{ url_for('index') }}#analytics">Analytics</a>
+<a href="{{ url_for('index') }}#security">Security</a>
+</div>
+<div class="footer__col">
+<h6 class="footer__title">Platform</h6>
+<a href="{{ url_for('track_complaint') }}">Track a Complaint</a>
+<a href="{{ url_for('student_login') }}">Student Login</a>
+<a href="{{ url_for('admin_login') }}">Admin Login</a>
+<a href="{{ url_for('student_register') }}">Create Account</a>
+</div>
+<div class="footer__col">
+<h6 class="footer__title">Legal</h6>
+<a href="#">Privacy Policy</a>
+<a href="#">Terms of Service</a>
+<a href="#">University Guidelines</a>
+<a href="#">GDPR</a>
+</div>
+</div>
+<div class="footer__bottom">
+<p>&copy; 2024 Complainify. All rights reserved. Institutional Navy Standard.</p>
+<div class="footer__social">
+<a href="#"><span class="material-symbols-outlined icon-sm">tag</span>Twitter</a>
+<a href="#"><span class="material-symbols-outlined icon-sm">linkedin</span>LinkedIn</a>
+<a href="#"><span class="material-symbols-outlined icon-sm">code</span>GitHub</a>
+</div>
+</div>
+</div>
+</footer>
+{% endblock %}
+
 <script>
+/* ---------------------------------------------------------------------------
+   Ticket-ID copy button (behaviour unchanged from the original shell)
+--------------------------------------------------------------------------- */
 function copyTicketId(btn){
   var id = btn.getAttribute('data-copy');
   if(!id) return;
@@ -47,29 +117,107 @@ function copyTicketId(btn){
   }
 }
 document.querySelectorAll('.flash-copy-btn').forEach(function(b){ if(b.getAttribute('data-copy')){ b.style.display = 'inline-flex'; } });
+
+/* ---------------------------------------------------------------------------
+   Design-system behaviours: theme toggle, sidebar drawer, dropdowns, reveal
+--------------------------------------------------------------------------- */
+window.Complainify = (function () {
+  var ROOT = document.documentElement;
+
+  function setTheme(theme) {
+    ROOT.setAttribute('data-theme', theme);
+    ROOT.classList.toggle('dark', theme === 'dark');
+    ROOT.classList.toggle('light', theme === 'light');
+    try { localStorage.setItem('complainify-theme', theme); } catch (err) {}
+    document.querySelectorAll('[data-theme-toggle] .material-symbols-outlined').forEach(function (icon) {
+      icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    });
+  }
+  function toggleTheme() {
+    setTheme(ROOT.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+
+  /* Lightweight toast — pairs with the .toast / .toast-stack styles */
+  function toast(type, title, message) {
+    var stack = document.querySelector('.toast-stack');
+    if (!stack) {
+      stack = document.createElement('div');
+      stack.className = 'toast-stack';
+      document.body.appendChild(stack);
+    }
+    var icons = { success: 'check', error: 'close', warning: 'priority_high', info: 'info' };
+    var el = document.createElement('div');
+    el.className = 'toast toast--' + (type || 'info');
+    el.innerHTML =
+      '<span class="toast__icon"><span class="material-symbols-outlined icon-sm">' +
+      (icons[type] || icons.info) + '</span></span>' +
+      '<div class="toast__content"><strong class="toast__title"></strong>' +
+      '<p class="toast__message"></p></div>' +
+      '<button type="button" class="toast__close" aria-label="Dismiss">&times;</button>';
+    el.querySelector('.toast__title').textContent = title || '';
+    el.querySelector('.toast__message').textContent = message || '';
+    stack.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('is-visible'); });
+    function dismiss() {
+      el.classList.add('is-hiding');
+      setTimeout(function () { el.remove(); }, 320);
+    }
+    el.querySelector('.toast__close').addEventListener('click', dismiss);
+    setTimeout(dismiss, 6000);
+    return el;
+  }
+
+  function init() {
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', toggleTheme);
+    });
+    setTheme(ROOT.getAttribute('data-theme') || 'light');
+
+    document.querySelectorAll('[data-sidebar-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var bar = document.querySelector('.sidebar');
+        if (bar) bar.classList.toggle('is-open');
+      });
+    });
+
+    document.querySelectorAll('[data-menu-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        var menu = btn.closest('.menu');
+        if (!menu) return;
+        document.querySelectorAll('.menu.is-open').forEach(function (other) {
+          if (other !== menu) other.classList.remove('is-open');
+        });
+        menu.classList.toggle('is-open');
+      });
+    });
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.menu.is-open').forEach(function (m) { m.classList.remove('is-open'); });
+    });
+
+    var targets = document.querySelectorAll('.reveal');
+    if (targets.length) {
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
+          });
+        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+        targets.forEach(function (t) { io.observe(t); });
+      } else {
+        targets.forEach(function (t) { t.classList.add('is-in'); });
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  return { toast: toast, setTheme: setTheme, toggleTheme: toggleTheme };
+})();
 </script>
-{% block content %}{% endblock %}
-{% block footer %}
-<footer class="bg-primary text-on-primary w-full mt-auto">
-<div class="max-w-7xl mx-auto px-6 py-16">
-<div class="grid md:grid-cols-4 gap-10 mb-12">
-<div class="md:col-span-1">
-<div class="flex items-center gap-2 mb-4">
-<span class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><span class="material-symbols-outlined text-white">gavel</span></span>
-<span class="text-xl font-bold text-white">Complainify</span>
-</div>
-<p class="text-sm text-primary-fixed-dim leading-relaxed">AI-powered complaint resolution platform for higher education institutions. Bridging the gap between student feedback and administrative action.</p>
-</div>
-<div><span class="text-sm font-bold text-white uppercase tracking-wider block mb-5">Product</span><div class="flex flex-col gap-3"><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="{{ url_for('index') }}#features">Features</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="{{ url_for('index') }}#how-it-works">How It Works</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Pricing</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Integrations</a></div></div>
-<div><span class="text-sm font-bold text-white uppercase tracking-wider block mb-5">Company</span><div class="flex flex-col gap-3"><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="{{ url_for('index') }}#about">About Us</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Case Studies</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Blog</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Contact</a></div></div>
-<div><span class="text-sm font-bold text-white uppercase tracking-wider block mb-5">Legal</span><div class="flex flex-col gap-3"><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Privacy Policy</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">Terms of Service</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">University Guidelines</a><a class="text-sm text-primary-fixed-dim hover:text-white transition-colors" href="#">GDPR</a></div></div>
-</div>
-<div class="border-t border-on-primary-fixed-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-fixed-dim">
-<p>&copy; 2024 Complainify. All rights reserved. Institutional Navy Standard.</p>
-<div class="flex gap-6"><a class="hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">tag</span>Twitter</a><a class="hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">linkedin</span>LinkedIn</a><a class="hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">code</span>GitHub</a></div>
-</div>
-</div>
-</footer>
-{% endblock %}
 </body>
 </html>

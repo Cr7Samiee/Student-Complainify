@@ -1,21 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Login — Complainify{% endblock %}
+{% set hide_flashes = true %}
+{% block title %}Student Login — Complainify{% endblock %}
 {% block content %}
-<header class="w-full pt-8 pb-4 flex flex-col items-center justify-center relative">
-<a href="{{ url_for('index') }}" class="absolute left-6 top-8 flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home</a>
-<div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4"><span class="material-symbols-outlined text-white text-2xl">gavel</span></div>
-<h1 class="text-2xl font-bold text-primary tracking-tight font-sans">Complainify</h1>
-</header>
-<main class="flex-grow flex items-center justify-center px-4 pb-16">
-<div class="bg-surface-white w-full max-w-md rounded-xl border border-outline-variant overflow-hidden shadow-sm">
-<div class="p-8">
-<div class="mb-8 text-center">
-<h2 class="text-2xl font-semibold text-on-surface mb-2">Welcome Back</h2>
-<p class="text-base text-on-surface-variant">Access your institutional resolution portal.</p>
+<main class="auth aurora">
+<a class="auth__back" href="{{ url_for('index') }}">
+<span class="material-symbols-outlined icon-sm">arrow_back</span> Back to home
+</a>
+<div class="auth__wrap">
+<div class="auth__brand anim-fade-up">
+<a class="brand brand--lg" href="{{ url_for('index') }}">
+<span class="brand__mark"><span class="material-symbols-outlined">gavel</span></span>
+<span>Complainify</span>
+</a>
+<span class="eyebrow eyebrow--ai"><span class="material-symbols-outlined icon-sm">auto_awesome</span>Student Portal</span>
 </div>
-<div class="flex mb-6 bg-slate-bg rounded-lg p-1">
-<a href="{{ url_for('student_login') }}" class="flex-1 py-2 text-center text-sm font-semibold bg-white rounded-md shadow-sm text-primary">Student</a>
-<a href="{{ url_for('admin_login') }}" class="flex-1 py-2 text-center text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">Admin</a>
+<section class="auth__card anim-fade-up anim-delay-1">
+<div class="auth__head">
+<h2>Welcome back</h2>
+<p class="muted text-sm">Access your institutional resolution portal.</p>
+</div>
+<div class="auth__body">
+<div class="segmented auth__switch">
+<a class="is-active" href="{{ url_for('student_login') }}">Student</a>
+<a href="{{ url_for('admin_login') }}">Admin</a>
 </div>
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -24,38 +31,41 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
-<form method="POST" class="space-y-5">
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="email">Email Address</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="email" name="email" placeholder="name@university.edu" type="text">
+<form method="POST" class="stack stack--sm">
+<div class="field">
+<label class="field__label" for="email">Email address</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">mail</span>
+<input class="input" id="email" name="email" type="text" placeholder="name@university.edu" autocomplete="username" required>
 </div>
 </div>
-<div class="space-y-1.5">
-<div class="flex justify-between items-center">
-<label class="block text-sm font-medium text-on-surface" for="password">Password</label>
-<a class="text-xs text-secondary hover:underline transition-colors" href="{{ url_for('forgot_password') }}">Forgot password?</a>
+<div class="field">
+<div class="field__row">
+<label class="field__label" for="password">Password</label>
+<a class="link text-xs" href="{{ url_for('forgot_password') }}">Forgot password?</a>
 </div>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="password" name="password" placeholder="Enter password" type="password">
+<div class="input-icon">
+<span class="material-symbols-outlined">lock</span>
+<input class="input" id="password" name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
 </div>
 </div>
-<button class="w-full bg-primary text-on-primary text-sm font-semibold py-3.5 rounded-lg active:scale-95 transition-all shadow-sm hover:brightness-110" type="submit">Sign In</button>
+<button class="btn btn--primary btn--lg btn--block mt-2" type="submit">
+<span class="material-symbols-outlined icon-sm">login</span> Sign in
+</button>
 </form>
-<div class="relative my-8">
-<div class="absolute inset-0 flex items-center"><span class="w-full border-t border-outline-variant"></span></div>
-<div class="relative flex justify-center text-xs uppercase"><span class="bg-surface-white px-3 text-on-surface-variant font-semibold">Or continue with</span></div>
-</div>
-<div class="grid grid-cols-2 gap-4">
-<button class="flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-primary text-primary rounded-lg text-sm font-medium hover:bg-surface transition-colors active:scale-95"><span class="material-symbols-outlined">school</span>University ID</button>
-<button class="flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-primary text-primary rounded-lg text-sm font-medium hover:bg-surface transition-colors active:scale-95"><span class="material-symbols-outlined">account_circle</span>Google</button>
+<div class="auth__divider">Or continue with</div>
+<div class="auth__alt">
+<button class="btn btn--outline" type="button"><span class="material-symbols-outlined icon-sm">school</span>University ID</button>
+<button class="btn btn--outline" type="button"><span class="material-symbols-outlined icon-sm">account_circle</span>Google</button>
 </div>
 </div>
-<div class="bg-surface-container py-4 px-8 text-center">
-<p class="text-sm text-on-surface-variant">Don't have an account? <a class="text-secondary font-bold hover:underline" href="{{ url_for('student_register') }}">Register here</a></p>
+<div class="auth__foot">
+Don't have an account? <a class="link" href="{{ url_for('student_register') }}">Register here</a>
 </div>
+</section>
+<p class="auth__legal">
+Track an existing case from the <a class="link" href="{{ url_for('track_complaint') }}">complaint tracker</a> — no sign-in required.
+</p>
 </div>
 </main>
 {% endblock %}

@@ -1,18 +1,25 @@
 {% extends "base.html" %}
-{% block title %}Register — Complainify{% endblock %}
+{% set hide_flashes = true %}
+{% block title %}Create Account — Complainify{% endblock %}
 {% block content %}
-<header class="w-full pt-8 pb-4 flex flex-col items-center justify-center relative">
-<a href="{{ url_for('index') }}" class="absolute left-6 top-8 flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home</a>
-<div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4"><span class="material-symbols-outlined text-white text-2xl">gavel</span></div>
-<h1 class="text-2xl font-bold text-primary tracking-tight font-sans">Complainify</h1>
-</header>
-<main class="flex-grow flex items-center justify-center px-4 pb-16">
-<div class="bg-surface-white w-full max-w-md rounded-xl border border-outline-variant overflow-hidden shadow-sm">
-<div class="p-8">
-<div class="mb-8 text-center">
-<h2 class="text-2xl font-semibold text-on-surface mb-2">Create Account</h2>
-<p class="text-base text-on-surface-variant">Register for a student account.</p>
+<main class="auth aurora">
+<a class="auth__back" href="{{ url_for('index') }}">
+<span class="material-symbols-outlined icon-sm">arrow_back</span> Back to home
+</a>
+<div class="auth__wrap">
+<div class="auth__brand anim-fade-up">
+<a class="brand brand--lg" href="{{ url_for('index') }}">
+<span class="brand__mark"><span class="material-symbols-outlined">gavel</span></span>
+<span>Complainify</span>
+</a>
+<span class="eyebrow eyebrow--ai"><span class="material-symbols-outlined icon-sm">person_add</span>Student Registration</span>
 </div>
+<section class="auth__card anim-fade-up anim-delay-1">
+<div class="auth__head">
+<h2>Create your account</h2>
+<p class="muted text-sm">Register to file complaints and track their resolution.</p>
+</div>
+<div class="auth__body">
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
@@ -20,33 +27,34 @@
 {% endfor %}
 {% endif %}
 {% endwith %}
-<form method="POST" class="space-y-5">
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="fullname">Full Name</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="fullname" name="fullname" placeholder="John Doe" type="text">
+<form method="POST" class="stack stack--sm">
+<div class="field">
+<label class="field__label" for="fullname">Full name</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">person</span>
+<input class="input" id="fullname" name="fullname" type="text" placeholder="John Doe" autocomplete="name" required>
 </div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="email">Email Address</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="email" name="email" placeholder="name@gmail.com" type="text">
+<div class="field">
+<label class="field__label" for="email">Email address</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">mail</span>
+<input class="input" id="email" name="email" type="text" placeholder="name@gmail.com" autocomplete="email" required>
 </div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="phone">Phone Number</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">call</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="phone" name="phone" placeholder="98XXXXXXXX" type="text">
+<div class="field-grid">
+<div class="field">
+<label class="field__label" for="phone">Phone number</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">call</span>
+<input class="input" id="phone" name="phone" type="text" placeholder="98XXXXXXXX" autocomplete="tel">
 </div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="college">College / Faculty</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">school</span>
-<select class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm appearance-none" id="college" name="college">
+<div class="field">
+<label class="field__label" for="college">College / Faculty</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">school</span>
+<select class="select" id="college" name="college">
 <option value="">Select your college</option>
 {% for c in colleges %}
 <option value="{{ c }}" {% if selected == c %}selected{% endif %}>{{ c }}</option>
@@ -54,52 +62,62 @@
 </select>
 </div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="password">Password</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="password" name="password" placeholder="Create a strong password" type="password" onkeyup="checkStrength(this.value)">
 </div>
-<div class="flex gap-1.5 mt-2" id="strength-bar">
-<div class="strength-segment h-1.5 flex-1 rounded-full bg-gray-200"></div>
-<div class="strength-segment h-1.5 flex-1 rounded-full bg-gray-200"></div>
-<div class="strength-segment h-1.5 flex-1 rounded-full bg-gray-200"></div>
-<div class="strength-segment h-1.5 flex-1 rounded-full bg-gray-200"></div>
+<div class="field">
+<label class="field__label" for="password">Password</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">lock</span>
+<input class="input" id="password" name="password" type="password" placeholder="Create a strong password" autocomplete="new-password" onkeyup="checkStrength(this.value)" required>
 </div>
-<p class="text-xs text-on-surface-variant mt-1" id="strength-text">Type a password to see strength</p>
+<div class="strength" id="strength-bar">
+<div class="strength-segment"></div>
+<div class="strength-segment"></div>
+<div class="strength-segment"></div>
+<div class="strength-segment"></div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="confirm_password">Confirm Password</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
-<input class="w-full pl-10 pr-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-on-surface text-sm" id="confirm_password" name="confirm_password" placeholder="Confirm your password" type="password">
+<p class="field__hint" id="strength-text">Use 10+ characters with a mix of case, numbers and symbols.</p>
+</div>
+<div class="field">
+<label class="field__label" for="confirm_password">Confirm password</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">lock</span>
+<input class="input" id="confirm_password" name="confirm_password" type="password" placeholder="Confirm your password" autocomplete="new-password" required>
 </div>
 </div>
-<button class="w-full bg-primary text-on-primary text-sm font-semibold py-3.5 rounded-lg active:scale-95 transition-all shadow-sm hover:brightness-110" type="submit">Create Account</button>
+<button class="btn btn--primary btn--lg btn--block mt-2" type="submit">
+<span class="material-symbols-outlined icon-sm">person_add</span> Create account
+</button>
 </form>
 </div>
-<div class="bg-surface-container py-4 px-8 text-center">
-<p class="text-sm text-on-surface-variant">Already have an account? <a class="text-secondary font-bold hover:underline" href="{{ url_for('student_login') }}">Sign In</a></p>
+<div class="auth__foot">
+Already have an account? <a class="link" href="{{ url_for('student_login') }}">Sign in</a>
 </div>
+</section>
+<p class="auth__legal">
+By registering you agree to your institution's <a class="link" href="#">acceptable use policy</a>.
+</p>
 </div>
 </main>
 <script>
 function checkStrength(pw) {
   var segments = document.querySelectorAll('.strength-segment');
   var text = document.getElementById('strength-text');
-  var colors = ['bg-gray-200','bg-red-400','bg-orange-400','bg-yellow-400','bg-green-500'];
-  var labels = ['','Weak','Fair','Good','Strong'];
+  var levels = ['', 'is-weak', 'is-fair', 'is-good', 'is-strong'];
+  var labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
   var score = 0;
   if (pw.length >= 6) score++;
   if (pw.length >= 10) score++;
   if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
   if (/\d/.test(pw)) score++;
   if (/[^a-zA-Z0-9]/.test(pw)) score++;
-  for (var i = 0; i < 4; i++) {
-    segments[i].className = 'strength-segment h-1.5 flex-1 rounded-full ' + (i < score ? colors[score] : 'bg-gray-200');
+  var level = levels[Math.min(score, 4)];
+  for (var i = 0; i < segments.length; i++) {
+    segments[i].className = 'strength-segment' + (level && i < score ? ' ' + level : '');
   }
-  text.textContent = score > 0 ? 'Password strength: ' + labels[score] : 'Type a password to see strength';
-  text.style.color = score > 3 ? '#10b981' : score > 1 ? '#f59e0b' : '#ef4444';
+  text.textContent = score > 0
+    ? 'Password strength: ' + labels[Math.min(score, 4)]
+    : 'Use 10+ characters with a mix of case, numbers and symbols.';
+  return score;
 }
 </script>
 {% endblock %}

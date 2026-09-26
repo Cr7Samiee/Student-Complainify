@@ -1,227 +1,383 @@
 {% extends "base.html" %}
 {% block title %}Complainify | AI-Powered Complaint Management for Universities{% endblock %}
 {% block content %}
-<header class="fixed top-0 w-full bg-surface-white border-b border-outline-variant shadow-sm z-50">
-<nav class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-<a href="{{ url_for('index') }}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-<span class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><span class="material-symbols-outlined text-white">gavel</span></span>
-<span class="text-xl font-bold text-primary tracking-tight">Complainify</span>
+<header class="nav">
+<div class="nav__inner">
+<a class="brand" href="{{ url_for('index') }}">
+<span class="brand__mark"><span class="material-symbols-outlined">gavel</span></span>
+<span>Complainify</span>
 </a>
-<div class="hidden md:flex items-center gap-8 text-sm text-on-surface-variant">
-<a class="hover:text-secondary transition-colors" href="#features">Features</a>
-<a class="hover:text-secondary transition-colors" href="#how-it-works">How It Works</a>
-<a class="hover:text-secondary transition-colors" href="#about">About Us</a>
-</div>
-<div class="flex items-center gap-3">
-<a href="{{ url_for('student_login') }}" class="text-sm font-semibold text-primary hover:opacity-80 px-4 py-2">Login</a>
-<a href="{{ url_for('student_register') }}" class="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-all shadow-sm">Get Started</a>
-</div>
+<nav class="nav__links">
+<a href="#features">Features</a>
+<a href="#how-it-works">How it works</a>
+<a href="#analytics">Analytics</a>
+<a href="#about">About</a>
 </nav>
+<div class="nav__actions">
+<a class="btn btn--ghost btn--sm" href="{{ url_for('track_complaint') }}">Track</a>
+<a class="btn btn--primary btn--sm" href="{{ url_for('student_login') }}">Login</a>
+</div>
+</div>
 </header>
 
-<main class="pt-20">
-<section class="relative min-h-[88vh] flex items-center px-6 overflow-hidden bg-gradient-to-br from-surface-bright via-surface to-surface-container-low">
-<div class="absolute inset-0 z-0 opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(circle at 20% 50%, #0058be 0%, transparent 50%), radial-gradient(circle at 80% 20%, #022448 0%, transparent 50%), radial-gradient(circle at 50% 80%, #2170e4 0%, transparent 50%);"></div>
-<div class="relative z-10 max-w-7xl mx-auto w-full">
-<div class="grid lg:grid-cols-2 gap-12 items-center">
-<div>
-
-<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-primary leading-[1.08] tracking-tight mb-6">
-Complaints shouldn't <br>collect dust.<br>
-<span class="text-secondary">They should get <br>resolved.</span>
+<main>
+<!-- ============================== HERO ============================== -->
+<section class="section aurora">
+<div class="grid-lines"></div>
+<div class="container">
+<div class="split">
+<div class="anim-fade-up">
+<span class="eyebrow eyebrow--ai"><span class="material-symbols-outlined icon-sm">auto_awesome</span>DistilBERT triage engine</span>
+<h1 class="display mt-4">
+Complaints shouldn't collect dust.<br>
+<span class="text-gradient">They should get resolved.</span>
 </h1>
-<p class="text-lg text-on-surface-variant max-w-lg mb-8 leading-relaxed">
-Complainify is an AI-powered platform for universities. Students submit complaints once — our system categorizes, prioritizes, and routes them to the right department automatically. No more lost forms or endless follow-ups.
+<p class="hero-sub mt-4">
+Complainify is an AI platform built for universities. Students submit once — our neural network
+categorizes, scores sentiment, prioritizes and routes every case to the right department automatically.
 </p>
-<div class="flex flex-col sm:flex-row gap-4 mb-12">
-<button onclick="document.getElementById('complainModal').classList.remove('hidden')" class="bg-primary text-on-primary px-8 py-4 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
-File a Complaint <span class="material-symbols-outlined">arrow_forward</span>
+<div class="cluster mt-6">
+<button class="btn btn--primary btn--lg" type="button" onclick="openComplainModal()">
+<span class="material-symbols-outlined icon-sm">edit_note</span> File a complaint
 </button>
-<a href="{{ url_for('track_complaint') }}" class="bg-surface-white border-2 border-primary text-primary px-8 py-4 rounded-xl text-sm font-bold hover:bg-slate-bg active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">search</span> Track Status
+<a class="btn btn--outline btn--lg" href="{{ url_for('track_complaint') }}">
+<span class="material-symbols-outlined icon-sm">search</span> Track status
 </a>
 </div>
-<div class="flex items-center gap-8 text-sm">
-<div><span class="text-2xl font-bold text-primary">2,400+</span><p class="text-on-surface-variant text-xs mt-0.5">Complaints Resolved</p></div>
-<div class="w-px h-10 bg-outline-variant"></div>
-<div><span class="text-2xl font-bold text-primary">98%</span><p class="text-on-surface-variant text-xs mt-0.5">AI Accuracy</p></div>
-<div class="w-px h-10 bg-outline-variant"></div>
-<div><span class="text-2xl font-bold text-primary">4.2 hrs</span><p class="text-on-surface-variant text-xs mt-0.5">Avg. Resolution</p></div>
-</div>
-</div>
-
-<div class="hidden lg:block">
-<div class="group bg-surface-white rounded-2xl shadow-2xl border border-outline-variant overflow-hidden hover:shadow-3xl hover:-translate-y-1 transition-all duration-500">
-<div class="bg-primary px-6 py-3 flex items-center justify-between">
-<div class="flex items-center gap-2 group-hover:gap-3 transition-all"><span class="w-3 h-3 rounded-full bg-red-400 group-hover:scale-110 transition-transform"></span><span class="w-3 h-3 rounded-full bg-yellow-400 group-hover:scale-110 transition-transform"></span><span class="w-3 h-3 rounded-full bg-green-400 group-hover:scale-110 transition-transform"></span></div>
-<span class="text-xs text-primary-fixed-dim font-medium group-hover:text-white transition-colors">Complainify Admin — Analytics Overview</span>
-<span class="text-xs text-primary-fixed-dim group-hover:text-white transition-colors">v4.2</span>
-</div>
-<div class="p-5 space-y-4">
-<div class="grid grid-cols-3 gap-3">
-<div class="bg-slate-bg rounded-lg p-3 group-hover:bg-surface-container group-hover:shadow-sm group-hover:-translate-y-0.5 transition-all cursor-default"><p class="text-xs text-on-surface-variant">Total</p><p class="text-lg font-bold text-primary group-hover:scale-105 transition-transform origin-left">142</p><p class="text-[10px] text-on-tertiary-container">+12% vs last week</p></div>
-<div class="bg-slate-bg rounded-lg p-3 group-hover:bg-surface-container group-hover:shadow-sm group-hover:-translate-y-0.5 transition-all cursor-default"><p class="text-xs text-on-surface-variant">Resolved</p><p class="text-lg font-bold text-on-tertiary-container group-hover:scale-105 transition-transform origin-left">86</p><p class="text-[10px] text-on-tertiary-container">60.6% rate</p></div>
-<div class="bg-slate-bg rounded-lg p-3 group-hover:bg-surface-container group-hover:shadow-sm group-hover:-translate-y-0.5 transition-all cursor-default"><p class="text-xs text-on-surface-variant">Critical</p><p class="text-lg font-bold text-error-crimson group-hover:scale-105 transition-transform origin-left">09</p><p class="text-[10px] text-error-crimson">Needs attention</p></div>
-</div>
-                <div class="bg-slate-bg rounded-lg p-4 group-hover:bg-surface-container transition-all">
-                  <div class="flex justify-between items-center mb-2"><span class="text-xs font-semibold text-primary">Sentiment Momentum</span><span class="text-[10px] text-on-surface-variant">Last 30 days</span></div>
-                  <div class="flex items-end gap-1.5 h-16">
-                    <div class="flex-1 bg-blue-500 rounded-t group-hover:bg-blue-400 group-hover:h-[60%] transition-all duration-700" style="height:40%"></div>
-                    <div class="flex-1 bg-emerald-500 rounded-t group-hover:bg-emerald-400 group-hover:h-[75%] transition-all duration-700" style="height:55%"></div>
-                    <div class="flex-1 bg-amber-500 rounded-t group-hover:bg-amber-400 group-hover:h-[55%] transition-all duration-700" style="height:35%"></div>
-                    <div class="flex-1 bg-purple-600 rounded-t group-hover:bg-purple-500 group-hover:h-[95%] transition-all duration-700" style="height:90%"></div>
-                    <div class="flex-1 bg-pink-500 rounded-t group-hover:bg-pink-400 group-hover:h-[80%] transition-all duration-700" style="height:60%"></div>
-                    <div class="flex-1 bg-cyan-500 rounded-t group-hover:bg-cyan-400 group-hover:h-[85%] transition-all duration-700" style="height:70%"></div>
-                    <div class="flex-1 bg-rose-500 rounded-t group-hover:bg-rose-400 group-hover:h-[60%] transition-all duration-700" style="height:45%"></div>
-                  </div>
-                </div>
-<div class="flex gap-2">
-<span class="px-3 py-1.5 bg-on-tertiary-container/10 text-on-tertiary-container rounded-full text-xs font-semibold flex items-center gap-1 group-hover:bg-on-tertiary-container/20 group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-sm">check_circle</span>86 Resolved</span>
-<span class="px-3 py-1.5 bg-secondary/10 text-secondary rounded-full text-xs font-semibold flex items-center gap-1 group-hover:bg-secondary/20 group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-sm">pending_actions</span>47 Active</span>
-<span class="px-3 py-1.5 bg-error-crimson/10 text-error-crimson rounded-full text-xs font-semibold flex items-center gap-1 group-hover:bg-error-crimson/20 group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-sm">report_problem</span>9 Critical</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<section id="features" class="py-20 px-6">
-<div class="max-w-7xl mx-auto">
-<div class="text-center mb-16">
-<span class="inline-block px-4 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-semibold mb-4">Platform Features</span>
-<h2 class="text-4xl font-bold text-primary mb-4">Everything you need to <span class="text-secondary">resolve complaints</span></h2>
-<p class="text-base text-on-surface-variant max-w-2xl mx-auto">From AI-powered categorization to real-time tracking, Complainify gives students and administrators a complete toolkit for complaint resolution.</p>
-</div>
-<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-surface-white rounded-xl border border-outline-variant p-6 hover:shadow-lg transition-all group">
-<div class="w-12 h-12 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined">category</span></div>
-<h3 class="text-lg font-bold text-primary mb-2">AI Categorization</h3>
-<p class="text-sm text-on-surface-variant leading-relaxed">Our neural network automatically classifies complaints into departments — Academic, IT, Hostel, Infrastructure, and more — with 98% accuracy.</p>
-</div>
-<div class="bg-surface-white rounded-xl border border-outline-variant p-6 hover:shadow-lg transition-all group">
-<div class="w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined">psychology</span></div>
-<h3 class="text-lg font-bold text-primary mb-2">Sentiment Analysis</h3>
-<p class="text-sm text-on-surface-variant leading-relaxed">The system reads the tone and urgency of each complaint. High-emotion or high-severity issues are flagged and prioritized for immediate action.</p>
-</div>
-<div class="bg-surface-white rounded-xl border border-outline-variant p-6 hover:shadow-lg transition-all group">
-<div class="w-12 h-12 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined">track_changes</span></div>
-<h3 class="text-lg font-bold text-primary mb-2">Real-time Tracking</h3>
-<p class="text-sm text-on-surface-variant leading-relaxed">Students get a unique ticket ID and can monitor every stage — from submission to review to resolution — with live status updates and estimated timelines.</p>
-</div>
-<div class="bg-surface-white rounded-xl border border-outline-variant p-6 hover:shadow-lg transition-all group">
-<div class="w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined">analytics</span></div>
-<h3 class="text-lg font-bold text-primary mb-2">Institutional Insights</h3>
-<p class="text-sm text-on-surface-variant leading-relaxed">Administrators get heatmaps, trend reports, and category load analytics to identify recurring issues and address them at the root level.</p>
-</div>
-</div>
-</div>
-</section>
-
-<section id="how-it-works" class="py-20 px-6 bg-surface-white">
-<div class="max-w-7xl mx-auto">
-<div class="text-center mb-16">
-<span class="inline-block px-4 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-semibold mb-4">Simple Process</span>
-<h2 class="text-4xl font-bold text-primary mb-4">How it <span class="text-secondary">works</span></h2>
-<p class="text-base text-on-surface-variant max-w-2xl mx-auto">Three simple steps from filing a complaint to getting it resolved. No paperwork, no visits to the office.</p>
-</div>
-<div class="grid md:grid-cols-3 gap-8">
-<div class="text-center">
-<div class="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center mx-auto mb-5 shadow-lg"><span class="material-symbols-outlined text-2xl">edit_note</span></div>
-<h3 class="text-xl font-bold text-primary mb-2">1. Submit</h3>
-<p class="text-sm text-on-surface-variant max-w-xs mx-auto leading-relaxed">Fill out a simple form with your complaint details — category, description, and urgency level. Takes less than 2 minutes.</p>
-</div>
-<div class="text-center">
-<div class="w-16 h-16 rounded-2xl bg-secondary text-white flex items-center justify-center mx-auto mb-5 shadow-lg"><span class="material-symbols-outlined text-2xl">swap_vert</span></div>
-<h3 class="text-xl font-bold text-primary mb-2">2. Process</h3>
-<p class="text-sm text-on-surface-variant max-w-xs mx-auto leading-relaxed">AI categorizes and routes your complaint to the right department. The system assigns priority and begins tracking instantly.</p>
-</div>
-<div class="text-center">
-<div class="w-16 h-16 rounded-2xl bg-on-tertiary-container text-white flex items-center justify-center mx-auto mb-5 shadow-lg"><span class="material-symbols-outlined text-2xl">check_circle</span></div>
-<h3 class="text-xl font-bold text-primary mb-2">3. Resolve</h3>
-<p class="text-sm text-on-surface-variant max-w-xs mx-auto leading-relaxed">The department reviews and acts on your complaint. You get notified at every step until the issue is resolved.</p>
-</div>
-</div>
-</div>
-</section>
-
-<section class="py-20 px-6">
-<div class="max-w-7xl mx-auto">
-<div class="grid md:grid-cols-2 gap-12 items-center">
+<div class="cluster gap-lg mt-6">
 <div>
-<span class="inline-block px-4 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-semibold mb-4">For Administrators</span>
-<h2 class="text-4xl font-bold text-primary mb-6">Full control over <span class="text-secondary">every complaint</span></h2>
-<ul class="space-y-4">
-<li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-on-tertiary-container/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm text-on-tertiary-container">check</span></span><div><p class="text-sm font-semibold text-primary">Centralized Dashboard</p><p class="text-xs text-on-surface-variant">View all complaints in one place with sortable columns, filters, and search.</p></div></li>
-<li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-on-tertiary-container/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm text-on-tertiary-container">check</span></span><div><p class="text-sm font-semibold text-primary">AI Sentiment Scoring</p><p class="text-xs text-on-surface-variant">Every complaint comes with an AI-generated sentiment score. Spot the most urgent issues instantly.</p></div></li>
-<li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-on-tertiary-container/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm text-on-tertiary-container">check</span></span><div><p class="text-sm font-semibold text-primary">Analytics &amp; Reports</p><p class="text-xs text-on-surface-variant">Category load breakdowns, resolution time trends, and exportable reports for meetings.</p></div></li>
-<li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-on-tertiary-container/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm text-on-tertiary-container">check</span></span><div><p class="text-sm font-semibold text-primary">Role-based Access</p><p class="text-xs text-on-surface-variant">Student and admin portals are separated. Each user sees only what they need.</p></div></li>
-</ul>
+<p class="stat__value">2,400+</p>
+<p class="stat__label">Complaints resolved</p>
+</div>
+<span class="divider--v"></span>
+<div>
+<p class="stat__value">98%</p>
+<p class="stat__label">Routing accuracy</p>
+</div>
+<span class="divider--v"></span>
+<div>
+<p class="stat__value">4.2h</p>
+<p class="stat__label">Average resolution</p>
+</div>
+</div>
+</div>
+
+<aside class="stack stack--sm anim-fade-up anim-delay-2">
+<section class="card card--glass card--pad">
+<div class="between">
+<span class="eyebrow eyebrow--live">Live triage</span>
+<span class="badge badge--violet">CMP-2419</span>
+</div>
+<p class="fw-700 mt-3">Hostel Wi-Fi drops every evening</p>
+<p class="muted text-xs mt-1">Submitted 2 minutes ago · Hostel A, Block 3</p>
+<div class="stack stack--sm mt-5">
+<div class="conf">
+<div class="conf__row">
+<span class="conf__label">Predicted category</span>
+<span class="conf__value">Hostels · 96%</span>
+</div>
+<div class="conf__track"><span class="conf__fill" style="width:96%;display:block"></span></div>
+</div>
+<div class="conf">
+<div class="conf__row">
+<span class="conf__label">Sentiment: frustrated</span>
+<span class="conf__value">78%</span>
+</div>
+<div class="conf__track"><span class="conf__fill conf__fill--suggest" style="width:78%;display:block"></span></div>
+</div>
+</div>
+<div class="cluster mt-5">
+<span class="badge badge--red">High priority</span>
+<span class="badge badge--amber">Escalated</span>
+<span class="badge badge--slate">Auto-assigned</span>
+</div>
+</section>
+<section class="card card--pad">
+<div class="between">
+<span class="stat__label">Campus pulse</span>
+<span class="badge badge--green badge--dot">Live</span>
+</div>
+<div class="grid grid-3 gap-sm mt-4">
+<div>
+<p class="stat__value is-amber">47</p>
+<p class="stat__label">Active</p>
 </div>
 <div>
-<div class="group bg-surface-white rounded-2xl shadow-xl border border-outline-variant overflow-hidden hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-500">
-<div class="bg-primary px-5 py-3 flex items-center gap-2 group-hover:gap-3 transition-all"><span class="w-3 h-3 rounded-full bg-red-400 group-hover:scale-110 transition-transform"></span><span class="w-3 h-3 rounded-full bg-yellow-400 group-hover:scale-110 transition-transform"></span><span class="w-3 h-3 rounded-full bg-green-400 group-hover:scale-110 transition-transform"></span><span class="text-xs text-primary-fixed-dim ml-2 group-hover:text-white transition-colors">Complaint Analytics</span></div>
-<div class="p-5 space-y-4">
-<div class="flex justify-between items-center"><span class="text-xs font-semibold text-primary">Category Load</span><span class="text-[10px] text-on-surface-variant">Last 30 days</span></div>
-                    <div class="space-y-3">
-                      <div class="group-hover:translate-x-0.5 transition-transform"><div class="flex justify-between text-xs mb-1"><span>Academic Integrity</span><span class="font-bold text-blue-600">42%</span></div><div class="w-full bg-slate-bg h-2 rounded-full overflow-hidden"><div class="bg-blue-500 h-full rounded-full group-hover:w-[52%] transition-all duration-700" style="width:42%"></div></div></div>
-                      <div class="group-hover:translate-x-0.5 transition-transform"><div class="flex justify-between text-xs mb-1"><span>Facilities &amp; Hostels</span><span class="font-bold text-purple-600">28%</span></div><div class="w-full bg-slate-bg h-2 rounded-full overflow-hidden"><div class="bg-purple-500 h-full rounded-full group-hover:w-[36%] transition-all duration-700" style="width:28%"></div></div></div>
-                      <div class="group-hover:translate-x-0.5 transition-transform"><div class="flex justify-between text-xs mb-1"><span>IT &amp; Administrative</span><span class="font-bold text-emerald-600">18%</span></div><div class="w-full bg-slate-bg h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full rounded-full group-hover:w-[24%] transition-all duration-700" style="width:18%"></div></div></div>
-                      <div class="group-hover:translate-x-0.5 transition-transform"><div class="flex justify-between text-xs mb-1"><span>Financial Services</span><span class="font-bold text-amber-600">12%</span></div><div class="w-full bg-slate-bg h-2 rounded-full overflow-hidden"><div class="bg-amber-500 h-full rounded-full group-hover:w-[18%] transition-all duration-700" style="width:12%"></div></div></div>
-                    </div>
-<div class="border-t border-outline-variant pt-4 mt-4 flex justify-between text-xs group-hover:border-secondary/20 transition-colors"><span class="text-on-surface-variant">Avg resolution time</span><span class="font-bold text-primary group-hover:scale-105 transition-transform inline-block">4.2 hours</span><span class="text-on-surface-variant">Satisfaction</span><span class="font-bold text-on-tertiary-container group-hover:scale-105 transition-transform inline-block">88%</span></div>
+<p class="stat__value is-red">9</p>
+<p class="stat__label">Critical</p>
+</div>
+<div>
+<p class="stat__value is-green">312</p>
+<p class="stat__label">Resolved</p>
 </div>
 </div>
-</div>
+</section>
+</aside>
 </div>
 </div>
 </section>
 
-<section id="about" class="py-20 px-6 bg-[#f0f4fa]">
-<div class="max-w-3xl mx-auto text-center">
-<span class="inline-block px-4 py-1 rounded-full bg-primary-container text-on-primary-container text-xs font-semibold mb-4">About</span>
-<h2 class="text-4xl font-bold text-primary mb-6">Built for <span class="text-secondary">universities</span>, powered by <span class="text-secondary">AI</span></h2>
-<p class="text-base text-on-surface-variant leading-relaxed mb-8">
-Complainify was created to solve a simple problem: students face too many barriers when trying to file complaints on campus. Forms get lost, emails go unanswered, and issues pile up. We combine AI classification, sentiment analysis, and transparent tracking to create a system that works for both students and administrators. Our platform is used by multiple universities and has processed over 2,400 complaints with an average resolution time of just 4.2 hours.
-</p>
-<div class="grid grid-cols-3 gap-8 max-w-lg mx-auto">
-<div><span class="text-3xl font-bold text-primary">12+</span><p class="text-xs text-on-surface-variant mt-1">Universities</p></div>
-<div><span class="text-3xl font-bold text-primary">2.4K</span><p class="text-xs text-on-surface-variant mt-1">Complaints</p></div>
-<div><span class="text-3xl font-bold text-primary">96%</span><p class="text-xs text-on-surface-variant mt-1">Satisfaction</p></div>
+<!-- ============================ FEATURES ============================ -->
+<section class="section" id="features">
+<div class="container">
+<div class="section-head reveal">
+<span class="eyebrow">Platform features</span>
+<h2 class="mt-4">Everything you need to <span class="text-gradient">resolve complaints</span></h2>
+<p class="lead mt-3">From AI categorization to real-time tracking, Complainify gives students and
+administrators a complete toolkit for complaint resolution.</p>
+</div>
+<div class="grid grid-4">
+<article class="tile reveal">
+<span class="tile__icon tile__icon--violet"><span class="material-symbols-outlined">category</span></span>
+<h3>AI categorization</h3>
+<p>A DistilBERT classifier assigns each complaint to the right department — Academics, IT, Hostels,
+Maintenance and more — with 98% measured accuracy.</p>
+</article>
+<article class="tile reveal anim-delay-1">
+<span class="tile__icon tile__icon--cyan"><span class="material-symbols-outlined">psychology</span></span>
+<h3>Sentiment analysis</h3>
+<p>The engine reads tone and urgency. High-emotion or high-severity complaints are flagged and
+prioritized for immediate action.</p>
+</article>
+<article class="tile reveal anim-delay-2">
+<span class="tile__icon tile__icon--blue"><span class="material-symbols-outlined">track_changes</span></span>
+<h3>Real-time tracking</h3>
+<p>Students get a unique ticket ID and follow every stage — submitted, assigned, in progress,
+resolved — as it happens.</p>
+</article>
+<article class="tile reveal anim-delay-3">
+<span class="tile__icon tile__icon--navy"><span class="material-symbols-outlined">analytics</span></span>
+<h3>Institutional insight</h3>
+<p>Heatmaps, trend reports and category load analytics help administrators fix recurring problems
+at the root.</p>
+</article>
 </div>
 </div>
 </section>
 
-<section class="py-20 px-6">
-<div class="max-w-7xl mx-auto rounded-3xl bg-secondary-container p-8 md:p-16 text-center relative overflow-hidden">
-<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 30% 50%, #ffffff 0%, transparent 60%), radial-gradient(circle at 70% 30%, #ffffff 0%, transparent 50%), radial-gradient(circle at 50% 80%, #ffffff 0%, transparent 40%);"></div>
-<div class="relative z-10">
-<h2 class="text-4xl font-bold text-white mb-4">Ready to transform complaint management?</h2>
-<p class="text-lg text-on-secondary-container max-w-2xl mx-auto mb-10">Join thousands of students and faculty who have made their campus communication faster, fairer, and more transparent.</p>
-<div class="flex flex-col sm:flex-row justify-center gap-4">
-<a href="{{ url_for('student_register') }}" class="bg-white text-primary px-10 py-4 rounded-xl text-lg font-bold hover:bg-slate-bg active:scale-95 transition-all shadow-xl">Get Started Free</a>
-<a href="{{ url_for('student_login') }}" class="bg-transparent border-2 border-white text-white px-10 py-4 rounded-xl text-lg font-bold hover:bg-white/10 active:scale-95 transition-all">Sign In</a>
+<!-- ========================== HOW IT WORKS ========================== -->
+<section class="section" id="how-it-works">
+<div class="container">
+<div class="section-head reveal">
+<span class="eyebrow">Simple process</span>
+<h2 class="mt-4">How it <span class="text-gradient">works</span></h2>
+<p class="lead mt-3">Three steps from filing a complaint to getting it resolved. No paperwork, no
+visits to the office.</p>
+</div>
+<div class="grid grid-3">
+<article class="card card--pad reveal">
+<span class="icon-badge icon-badge--ai"><span class="material-symbols-outlined">edit_note</span></span>
+<h3 class="mt-4">1. Submit</h3>
+<p class="muted text-sm mt-2">Fill in the form with your complaint details, attach evidence if you
+have it, and send. It takes less than two minutes.</p>
+</article>
+<article class="card card--pad reveal anim-delay-1">
+<span class="icon-badge icon-badge--ai"><span class="material-symbols-outlined">swap_vert</span></span>
+<h3 class="mt-4">2. Process</h3>
+<p class="muted text-sm mt-2">AI categorizes the complaint, scores its sentiment, sets a priority and
+routes it to the responsible department instantly.</p>
+</article>
+<article class="card card--pad reveal anim-delay-2">
+<span class="icon-badge icon-badge--ai"><span class="material-symbols-outlined">check_circle</span></span>
+<h3 class="mt-4">3. Resolve</h3>
+<p class="muted text-sm mt-2">The department reviews and acts. You are notified at every step until
+the issue is closed.</p>
+</article>
+</div>
+</div>
+</section>
+
+<!-- =========================== ANALYTICS =========================== -->
+<section class="section" id="analytics">
+<div class="container">
+<div class="split">
+<div class="reveal">
+<span class="eyebrow eyebrow--ai"><span class="material-symbols-outlined icon-sm">insights</span>For administrators</span>
+<h2 class="mt-4">Full control over <span class="text-gradient">every complaint</span></h2>
+<p class="lead mt-3">One console for triage, assignment and reporting — with the AI's reasoning shown
+next to every decision.</p>
+<div class="stack stack--sm mt-6">
+<div class="row">
+<span class="icon-badge"><span class="material-symbols-outlined">dashboard</span></span>
+<div>
+<p class="fw-700 text-sm">Centralized dashboard</p>
+<p class="muted text-xs">Sortable columns, filters, search and bulk status updates.</p>
+</div>
+</div>
+<div class="row">
+<span class="icon-badge"><span class="material-symbols-outlined">speed</span></span>
+<div>
+<p class="fw-700 text-sm">Priority scoring you can audit</p>
+<p class="muted text-xs">Every score shows its category confidence and sentiment inputs.</p>
+</div>
+</div>
+<div class="row">
+<span class="icon-badge"><span class="material-symbols-outlined">verified</span></span>
+<div>
+<p class="fw-700 text-sm">Human-in-the-loop labels</p>
+<p class="muted text-xs">Confirm or correct the AI label and feed it back into training.</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="card card--pad reveal anim-delay-1">
+<div class="between">
+<span class="panel__title"><span class="material-symbols-outlined icon-sm">bar_chart</span>Complaints by department</span>
+<span class="badge badge--blue">Last 30 days</span>
+</div>
+<div class="bars mt-6" aria-hidden="true">
+<i style="height:62%"></i>
+<i style="height:88%"></i>
+<i style="height:44%"></i>
+<i style="height:72%"></i>
+<i style="height:35%"></i>
+<i style="height:56%"></i>
+<i style="height:26%"></i>
+<i style="height:40%"></i>
+</div>
+<div class="divider mt-5"></div>
+<div class="grid grid-3 gap-sm mt-5">
+<div>
+<p class="stat__value">4.2h</p>
+<p class="stat__label">Mean resolve</p>
+</div>
+<div>
+<p class="stat__value is-green">91%</p>
+<p class="stat__label">SLA met</p>
+</div>
+<div>
+<p class="stat__value is-red">9</p>
+<p class="stat__label">Critical open</p>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</section>
+
+<!-- ============================ SECURITY ============================ -->
+<section class="section" id="security">
+<div class="container">
+<div class="section-head reveal">
+<span class="eyebrow">Trust &amp; governance</span>
+<h2 class="mt-4">Built for <span class="text-gradient">institutional standards</span></h2>
+</div>
+<div class="grid grid-3">
+<article class="card card--pad reveal">
+<span class="icon-badge"><span class="material-symbols-outlined">history</span></span>
+<h3 class="mt-4">Complete audit trail</h3>
+<p class="muted text-sm mt-2">Every assignment, status change and label confirmation is written to an
+immutable audit log with the acting user and timestamp.</p>
+</article>
+<article class="card card--pad reveal anim-delay-1">
+<span class="icon-badge"><span class="material-symbols-outlined">admin_panel_settings</span></span>
+<h3 class="mt-4">Role-based access</h3>
+<p class="muted text-sm mt-2">Separate student and administrator surfaces. Students only ever see their
+own complaints and files.</p>
+</article>
+<article class="card card--pad reveal anim-delay-2">
+<span class="icon-badge"><span class="material-symbols-outlined">encrypted</span></span>
+<h3 class="mt-4">Anonymous submissions</h3>
+<p class="muted text-sm mt-2">Students can report sensitive issues anonymously and still receive a
+ticket ID to follow the outcome.</p>
+</article>
+</div>
+</div>
+</section>
+
+<!-- ============================== ABOUT ============================== -->
+<section class="section" id="about">
+<div class="container">
+<div class="section-head reveal">
+<span class="eyebrow">About us</span>
+<h2 class="mt-4">Why we built <span class="text-gradient">Complainify</span></h2>
+<p class="lead mt-3">Campuses lose complaints in inboxes and paper trays. We combine AI classification,
+sentiment analysis and transparent tracking so that every voice is heard and every issue is
+accountable.</p>
+</div>
+<div class="grid grid-3 reveal">
+<article class="stat stat--navy">
+<div class="stat__top">
+<span class="stat__label">Universities</span>
+<span class="stat__icon"><span class="material-symbols-outlined">account_balance</span></span>
+</div>
+<p class="stat__value">12+</p>
+<p class="stat__foot">Onboarded partners</p>
+</article>
+<article class="stat stat--blue">
+<div class="stat__top">
+<span class="stat__label">Complaints processed</span>
+<span class="stat__icon"><span class="material-symbols-outlined">forum</span></span>
+</div>
+<p class="stat__value">2.4K</p>
+<p class="stat__foot is-up"><span class="material-symbols-outlined icon-sm">trending_up</span>Growing monthly</p>
+</article>
+<article class="stat stat--green">
+<div class="stat__top">
+<span class="stat__label">Satisfaction</span>
+<span class="stat__icon"><span class="material-symbols-outlined">sentiment_satisfied</span></span>
+</div>
+<p class="stat__value">96%</p>
+<p class="stat__foot">Post-resolution survey</p>
+</article>
+</div>
+</div>
+</section>
+
+<!-- =============================== CTA =============================== -->
+<section class="section section--tight">
+<div class="container">
+<div class="cta reveal">
+<span class="eyebrow eyebrow--ai"><span class="material-symbols-outlined icon-sm">rocket_launch</span>Get started</span>
+<h2 class="mt-4">Ready to transform complaint management?</h2>
+<p>Join the students and faculty who made their campus communication faster, fairer and more
+transparent.</p>
+<div class="cluster">
+<a class="btn btn--light btn--lg" href="{{ url_for('student_register') }}">
+<span class="material-symbols-outlined icon-sm">person_add</span>Get started free
+</a>
+<a class="btn btn--outline btn--lg" href="{{ url_for('student_login') }}" style="border-color:rgba(255,255,255,.5);color:#fff">
+<span class="material-symbols-outlined icon-sm">login</span>Sign in
+</a>
 </div>
 </div>
 </div>
 </section>
 </main>
 
-<div id="complainModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm" onclick="if(event.target===this)this.classList.add('hidden')">
-<div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full mx-4 p-8 text-center animate-[fadeIn_0.2s_ease-out]">
-<span class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4"><span class="material-symbols-outlined text-3xl text-primary">gavel</span></span>
-<h3 class="text-xl font-bold text-[#0a1628] mb-2">File a Complaint</h3>
-<p class="text-sm text-gray-500 mb-6">Would you like to submit anonymously or log in to track your complaint?</p>
-<div class="space-y-3">
-<a href="{{ url_for('submit_complaint', anonymous=1) }}" class="flex items-center justify-center gap-2 w-full bg-primary text-white px-6 py-3.5 rounded-xl text-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all"><span class="material-symbols-outlined text-sm">incognito</span>Submit Anonymously</a>
-<a href="{{ url_for('student_login') }}" class="flex items-center justify-center gap-2 w-full border-2 border-primary text-primary px-6 py-3.5 rounded-xl text-sm font-semibold hover:bg-primary/5 active:scale-[0.98] transition-all"><span class="material-symbols-outlined text-sm">login</span>Log In to Submit</a>
+<!-- ============================== MODAL ============================== -->
+<div class="modal" id="complainModal">
+<div class="modal__backdrop" onclick="closeComplainModal()"></div>
+<div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="complainModalTitle">
+<button class="modal__close" type="button" onclick="closeComplainModal()" aria-label="Close">
+<span class="material-symbols-outlined">close</span>
+</button>
+<span class="icon-badge icon-badge--ai icon-badge--center"><span class="material-symbols-outlined">gavel</span></span>
+<h3 class="modal__title center mt-4" id="complainModalTitle">File a complaint</h3>
+<p class="modal__text center">Would you like to submit anonymously, or sign in so you can track the
+case from your dashboard?</p>
+<div class="stack stack--sm mt-5">
+<a class="btn btn--primary btn--block" href="{{ url_for('submit_complaint', anonymous=1) }}">
+<span class="material-symbols-outlined icon-sm">incognito</span>Submit anonymously
+</a>
+<a class="btn btn--outline btn--block" href="{{ url_for('student_login') }}">
+<span class="material-symbols-outlined icon-sm">login</span>Log in to submit
+</a>
 </div>
-<button onclick="document.getElementById('complainModal').classList.add('hidden')" class="mt-5 text-xs text-gray-400 hover:text-gray-600 transition-colors">Cancel</button>
 </div>
 </div>
 
-<style>
-@keyframes fadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
-</style>
+<script>
+function openComplainModal() {
+  var modal = document.getElementById('complainModal');
+  if (modal) modal.classList.add('is-visible');
+}
+function closeComplainModal() {
+  var modal = document.getElementById('complainModal');
+  if (modal) modal.classList.remove('is-visible');
+}
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') closeComplainModal();
+});
+</script>
 {% endblock %}
