@@ -84,7 +84,7 @@
   --ring: rgba(33, 112, 228, .35);
 
   /* Gradients */
-  --grad-brand: linear-gradient(135deg, var(--navy-700) 0%, var(--blue-600) 55%, var(--blue-500) 100%);
+  --grad-brand: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-500) 50%, var(--violet-500) 100%);
   --grad-ai: linear-gradient(120deg, var(--violet-500) 0%, var(--blue-500) 48%, var(--cyan-500) 100%);
   --grad-dark: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-950) 100%);
   --grad-sheen: linear-gradient(135deg, rgba(255, 255, 255, .20), rgba(255, 255, 255, 0) 62%);
@@ -168,7 +168,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-sans);
-  font-size: .9375rem;
+  font-size: .875rem;
   line-height: 1.6;
   color: var(--text);
   background: var(--bg);
@@ -178,6 +178,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   transition: background var(--t), color var(--t);
+  overflow-x: hidden;
 }
 
 img, svg, video, canvas { display: block; max-width: 100%; }
@@ -226,12 +227,12 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
   line-height: 1.2;
   letter-spacing: -.02em;
 }
-body h1 { font-size: clamp(2rem, 4vw, 3.25rem); }
-body h2 { font-size: clamp(1.5rem, 2.6vw, 2.25rem); }
-body h3 { font-size: 1.25rem; }
-body h4 { font-size: 1.0625rem; }
-body h5 { font-size: .9375rem; }
-body h6 { font-size: .875rem; }
+body h1 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+body h2 { font-size: clamp(1.375rem, 2.4vw, 2rem); }
+body h3 { font-size: 1.125rem; }
+body h4 { font-size: 1rem; }
+body h5 { font-size: .875rem; }
+body h6 { font-size: .8125rem; }
 
 .display {
   font-size: clamp(2.5rem, 5.4vw, 4.25rem);
@@ -874,7 +875,7 @@ body h6 { font-size: .875rem; }
    9. FORMS
    -------------------------------------------------------------------------- */
 .field { display: flex; flex-direction: column; gap: .4rem; }
-.field__label { font-size: .8125rem; font-weight: 600; color: var(--text); }
+.field__label { font-size: .8125rem; font-weight: 600; color: var(--text-strong); }
 .field__hint { font-size: .75rem; color: var(--text-faint); }
 .field__row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
 .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
@@ -890,14 +891,24 @@ textarea.textarea {
   border-radius: var(--r-md);
   background: var(--card);
   font-size: .875rem;
-  color: var(--text);
+  color: var(--text-strong);
   transition: border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
 }
 input.input::placeholder,
-textarea.textarea::placeholder { color: var(--text-faint); }
+textarea.textarea::placeholder { color: var(--text-muted); }
 input.input:hover,
 select.select:hover,
 textarea.textarea:hover { border-color: var(--slate-400); }
+/* In dark mode the field and the card share a background, so lift the field
+   slightly and brighten its border to keep it clearly readable. */
+[data-theme="dark"] input.input,
+[data-theme="dark"] select.select,
+[data-theme="dark"] textarea.textarea {
+  background: rgba(255, 255, 255, .045);
+  border-color: #33486c;
+}
+[data-theme="dark"] input.input::placeholder,
+[data-theme="dark"] textarea.textarea::placeholder { color: #8b9bb4; }
 input.input:focus,
 select.select:focus,
 textarea.textarea:focus {
@@ -916,6 +927,17 @@ select.select {
   background-repeat: no-repeat;
   background-position: right .85rem center;
   background-size: 14px;
+  max-width: 100%;
+}
+
+/* Ensure native select options are readable in both themes */
+select.select option {
+  background: var(--card);
+  color: var(--text-strong);
+}
+[data-theme="dark"] select.select option {
+  background: #0c1729;
+  color: #e2e8f0;
 }
 
 /* Input with a leading / trailing icon */
@@ -1458,6 +1480,7 @@ input.radio { width: 1rem; height: 1rem; accent-color: var(--blue-600); cursor: 
 .row { display: flex; align-items: center; gap: var(--sp-3); }
 .grow { flex: 1 1 0%; min-width: 0; }
 .center { text-align: center; }
+.col-span-all { grid-column: 1 / -1; }
 .right { text-align: right; }
 .nowrap { white-space: nowrap; }
 .w-full { width: 100%; }
@@ -1478,6 +1501,18 @@ input.radio { width: 1rem; height: 1rem; accent-color: var(--blue-600); cursor: 
 .text-md { font-size: .875rem; }
 .text-lg { font-size: 1rem; }
 .text-xl { font-size: 1.125rem; }
+/* A size utility must also win on headings, which are sized by `body h1..h6`
+   (0,0,2) further up - otherwise e.g. `.text-xl` on an <h1> is silently
+   overridden and the title renders at the clamp() size instead. Scoped to
+   headings via :is() (0,1,2) on purpose, so Tailwind's own `.text-*` utilities
+   keep working on the not-yet-migrated templates. */
+body :is(h1, h2, h3, h4, h5, h6).text-xs { font-size: .6875rem; }
+body :is(h1, h2, h3, h4, h5, h6).text-sm { font-size: .8125rem; }
+body :is(h1, h2, h3, h4, h5, h6).text-md { font-size: .875rem; }
+body :is(h1, h2, h3, h4, h5, h6).text-lg { font-size: 1rem; }
+body :is(h1, h2, h3, h4, h5, h6).text-xl { font-size: 1.125rem; }
+/* Same reasoning for the hero `.display` size on an <h1>. */
+body h1.display { font-size: clamp(2.5rem, 5.4vw, 4.25rem); }
 .fw-500 { font-weight: 500; }
 .fw-600 { font-weight: 600; }
 .fw-700 { font-weight: 700; }
@@ -1786,3 +1821,93 @@ input.radio { width: 1rem; height: 1rem; accent-color: var(--blue-600); cursor: 
   .auth__alt { grid-template-columns: minmax(0, 1fr); }
   .auth__back { position: static; margin-bottom: var(--sp-4); }
 }
+
+/* Prevent grid items from forcing horizontal overflow */
+.grid > * { min-width: 0; }
+.grid-2 > *, .grid-3 > *, .field { max-width: 100%; }
+
+/* --------------------------------------------------------------------------
+   FULL-PAGE FORM SHELL (submit a complaint, settings-style pages)
+   -------------------------------------------------------------------------- */
+.page-shell {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.page-shell > main { flex: 1 0 auto; }
+/* Page title for standalone form pages. `body .page-title` (0,1,1) beats the
+   global `body h1` heading size (0,0,2). */
+body .page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  color: var(--text-strong);
+}
+/* File inputs — styled without Tailwind's `file:` modifiers so the control
+   keeps working after the CDN is removed. */
+input.input[type="file"] { padding: .45rem .55rem; cursor: pointer; }
+input.input[type="file"]::file-selector-button {
+  margin-right: var(--sp-3);
+  padding: .45rem .9rem;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--grad-brand);
+  color: #fff;
+  font-family: inherit;
+  font-size: .8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+input.input[type="file"]::file-selector-button:hover { filter: brightness(1.06); }
+
+/* --------------------------------------------------------------------------
+   COMPACT FORM CARD - small single-field forms (track a complaint, lookups)
+   -------------------------------------------------------------------------- */
+.form-card {
+  max-width: 30rem;
+  margin-inline: auto;
+  padding: var(--sp-6) var(--sp-6) var(--sp-5);
+  text-align: center;
+}
+.form-card .icon-badge--sm { width: 44px; height: 44px; border-radius: var(--r-md); }
+.form-card .icon-badge--sm .material-symbols-outlined { font-size: 1.35rem; }
+/* `.form-card .form-card__title` (0,2,0) beats `body h1` (0,0,2), so this
+   title cannot be inflated by the global heading size. */
+.form-card .form-card__title {
+  margin-top: var(--sp-3);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--text-strong);
+}
+.form-card > p {
+  margin-top: var(--sp-1);
+  font-size: .875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.form-card form { margin-top: var(--sp-5); text-align: left; }
+.form-card .btn { padding: .8rem 1.25rem; font-size: .9375rem; border-radius: var(--r-md); }
+@media (max-width: 560px) {
+  .form-card { padding: var(--sp-5); }
+}
+
+/* Overrides for inline Tailwind classes used by AI preview widgets to ensure visibility in dark mode */
+.bg-blue-50 { background: var(--blue-50) !important; }
+.bg-green-50 { background: var(--emerald-50) !important; }
+.bg-purple-50 { background: var(--violet-100) !important; }
+.text-blue-700 { color: var(--blue-700) !important; }
+.text-blue-800 { color: var(--blue-600) !important; }
+.text-green-800 { color: var(--emerald-700) !important; }
+.text-purple-700 { color: var(--violet-600) !important; }
+.border-blue-100 { border-color: var(--blue-100) !important; }
+.border-green-100 { border-color: var(--emerald-100) !important; }
+.border-purple-100 { border-color: var(--violet-100) !important; }
+.bg-blue-600 { background: var(--blue-600) !important; }
+.bg-blue-400 { background: var(--blue-400) !important; }
+.bg-blue-200 { background: var(--blue-200) !important; }
+.bg-red-500 { background: var(--red-500) !important; }
+.bg-gray-400 { background: var(--slate-400) !important; }
+.bg-green-500 { background: var(--emerald-500) !important; }
+.bg-yellow-400 { background: var(--amber-500) !important; }
