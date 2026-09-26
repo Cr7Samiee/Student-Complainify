@@ -1,5 +1,5 @@
 {
-  "last_trained": "2026-08-09 14:31:29",
+  "last_trained": "2026-09-26 20:50:29",
   "dataset": "sentiment_dataset.csv",
   "rows": 12000,
   "source_breakdown": {
@@ -9,55 +9,55 @@
   "train_samples": 9600,
   "test_samples": 2400,
   "sentiment": {
-    "accuracy": 95.12,
-    "macro_f1": 0.9406,
+    "accuracy": 97.04,
+    "macro_f1": 0.9628,
     "per_class": [
       {
         "class": "neutral",
         "precision": 1.0,
-        "recall": 0.9021,
-        "f1": 0.9485,
+        "recall": 0.9404,
+        "f1": 0.9693,
         "samples": 1175
       },
       {
         "class": "positive",
-        "precision": 0.9964,
-        "recall": 0.9976,
-        "f1": 0.997,
+        "precision": 0.9988,
+        "recall": 0.9988,
+        "f1": 0.9988,
         "samples": 821
       },
       {
         "class": "negative",
-        "precision": 0.7799,
+        "precision": 0.8523,
         "recall": 1.0,
-        "f1": 0.8764,
+        "f1": 0.9203,
         "samples": 404
       }
     ]
   },
   "priority": {
-    "accuracy": 99.21,
-    "macro_f1": 0.9921,
+    "accuracy": 99.46,
+    "macro_f1": 0.9944,
     "per_class": [
       {
         "class": "medium",
         "precision": 0.996,
-        "recall": 0.9815,
-        "f1": 0.9887,
+        "recall": 0.9881,
+        "f1": 0.9921,
         "samples": 758
       },
       {
         "class": "low",
-        "precision": 0.991,
-        "recall": 0.9959,
-        "f1": 0.9934,
+        "precision": 0.9951,
+        "recall": 0.9967,
+        "f1": 0.9959,
         "samples": 1216
       },
       {
         "class": "high",
-        "precision": 0.9884,
+        "precision": 0.9907,
         "recall": 1.0,
-        "f1": 0.9942,
+        "f1": 0.9953,
         "samples": 426
       }
     ]
@@ -139,6 +139,41 @@
       "priority_acc": 99.21,
       "sentiment_f1": 0.9406,
       "priority_f1": 0.9921
+    },
+    {
+      "date": "2026-08-09 22:18:32",
+      "sentiment_acc": 95.12,
+      "priority_acc": 98.17,
+      "sentiment_f1": 0.9406,
+      "priority_f1": 0.9836
+    },
+    {
+      "date": "2026-08-09 22:20:58",
+      "sentiment_acc": 95.12,
+      "priority_acc": 98.12,
+      "sentiment_f1": 0.9406,
+      "priority_f1": 0.9833
+    },
+    {
+      "date": "2026-09-26 20:44:46",
+      "sentiment_acc": 95.71,
+      "priority_acc": 99.46,
+      "sentiment_f1": 0.9474,
+      "priority_f1": 0.9944
+    },
+    {
+      "date": "2026-09-26 20:49:09",
+      "sentiment_acc": 96.71,
+      "priority_acc": 99.46,
+      "sentiment_f1": 0.959,
+      "priority_f1": 0.9944
+    },
+    {
+      "date": "2026-09-26 20:50:29",
+      "sentiment_acc": 97.04,
+      "priority_acc": 99.46,
+      "sentiment_f1": 0.9628,
+      "priority_f1": 0.9944
     }
   ]
 }

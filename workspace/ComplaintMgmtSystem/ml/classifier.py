@@ -57,8 +57,9 @@ def clean_and_tokenize(text, add_bigrams=True):
     return tokens
 
 class MultinomialNB:
-    def __init__(self, alpha=1.0, min_df=3):
+    def __init__(self, alpha=1.0, min_df=3, add_bigrams=True):
         self.alpha = alpha; self.min_df = min_df
+        self.add_bigrams = add_bigrams
         self._trained = False
 
     def fit(self, texts, labels):
@@ -66,7 +67,7 @@ class MultinomialNB:
         n = len(texts)
         class_docs = Counter(labels)
         self.priors = {c: math.log(class_docs[c] / n) for c in self.classes}
-        all_tokenized = [clean_and_tokenize(t) for t in texts]
+        all_tokenized = [clean_and_tokenize(t, add_bigrams=self.add_bigrams) for t in texts]
         doc_freq = Counter()
         for tokens in all_tokenized:
             for token in set(tokens):
@@ -85,6 +86,7 @@ class MultinomialNB:
     def save(self, path):
         data = {
             'alpha': self.alpha, 'min_df': self.min_df,
+            'add_bigrams': self.add_bigrams,
             'classes': self.classes, 'priors': self.priors,
             'vocab': list(self.vocab), 'vocab_size': self.vocab_size,
             'class_total_words': self.class_total_words,
@@ -97,7 +99,8 @@ class MultinomialNB:
     def load(cls, path):
         with open(path) as f:
             data = json.load(f)
-        m = cls(alpha=data['alpha'], min_df=data['min_df'])
+        m = cls(alpha=data['alpha'], min_df=data['min_df'],
+                add_bigrams=data.get('add_bigrams', True))
         m.classes = data['classes']
         m.priors = {int(k) if k.isdigit() else k: v for k, v in data['priors'].items()}
         m.vocab = set(data['vocab'])
@@ -110,7 +113,7 @@ class MultinomialNB:
     def predict_with_proba(self, text):
         if not self._trained:
             raise RuntimeError("Model not trained")
-        tokens = clean_and_tokenize(text)
+        tokens = clean_and_tokenize(text, add_bigrams=self.add_bigrams)
         scores = {}
         for c in self.classes:
             log_prob = self.priors[c]
@@ -175,7 +178,7 @@ def get_model():
             rows = list(csv.DictReader(f))
         texts = [r['text'] for r in rows]
         labels = [int(r['category_encoded']) for r in rows]
-        _model = MultinomialNB()
+        _model = MultinomialNB(alpha=0.01, min_df=1)
         _model.fit(texts, labels)
         try:
             _model.save(MODEL_PARAMS_PATH)
