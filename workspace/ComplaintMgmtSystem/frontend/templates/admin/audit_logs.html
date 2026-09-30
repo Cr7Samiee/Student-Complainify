@@ -13,6 +13,7 @@
 <nav class="flex-1 px-2 space-y-0.5">
 <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">dashboard</span>Dashboard</a>
 <a href="{{ url_for('admin_complaints') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">assignment</span>All Complaints</a>
+<a href="{{ url_for('track_complaint') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">search</span>Track Status</a>
 <a href="{{ url_for('admin_audit_logs') }}" class="flex items-center gap-3 bg-[#d32f2f]/20 text-white rounded-lg px-4 py-3 text-sm font-medium border-l-2 border-[#d32f2f]"><span class="material-symbols-outlined text-sm">history</span>Audit Logs</a>
 <a href="{{ url_for('admin_users') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">people</span>Users</a>
 <a href="{{ url_for('admin_training_logs') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">model_training</span>Training</a>
@@ -52,7 +53,7 @@
 <td class="px-5 py-3.5"><span class="px-2 py-1 rounded-full text-[10px] font-bold {% if log.action == 'login' %}bg-blue-100 text-blue-700{% elif 'delete' in log.action %}bg-red-100 text-red-600{% else %}bg-gray-100 text-gray-600{% endif %}">{{ log.action }}</span></td>
 <td class="px-5 py-3.5 text-sm text-gray-600">{{ log.target_type }} {{ log.target_id or '' }}</td>
 <td class="px-5 py-3.5 text-sm text-gray-500 max-w-xs truncate">{{ log.details or '-' }}</td>
-<td class="px-5 py-3.5 text-xs text-gray-400">{{ log.created_at.strftime('%d %b %Y %I:%M %p') if log.created_at else '' }}</td>
+<td class="px-5 py-3.5 text-xs text-gray-500">{{ log.created_at.strftime('%d %b %Y %I:%M %p') if log.created_at else '' }}</td>
 </tr>
 {% endfor %}
 </tbody>

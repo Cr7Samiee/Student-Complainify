@@ -652,6 +652,12 @@ body h6 { font-size: .8125rem; }
 }
 .segmented a:hover { color: var(--text-strong); }
 .segmented a.is-active { background: var(--card); color: var(--navy-700); box-shadow: var(--shadow-sm); }
+/* Dark mode: the active pill inherits the dark card bg, so give the track
+   and the active pill their own readable colors (light pill, navy text). */
+[data-theme="dark"] .segmented { background: rgba(255, 255, 255, .07); }
+[data-theme="dark"] .segmented a { color: #9fb0c8; }
+[data-theme="dark"] .segmented a:hover { color: #ffffff; }
+[data-theme="dark"] .segmented a.is-active { background: #f1f5f9; color: #022448; }
 
 /* --------------------------------------------------------------------------
    6. CARDS, PANELS, TILES & BADGES
@@ -828,6 +834,8 @@ body h6 { font-size: .8125rem; }
 .stat__foot.is-down { color: var(--red-600); }
 
 .stat--navy { color: var(--navy-700); }
+[data-theme="dark"] .stat--navy { color: #e2e8f0; }
+[data-theme="dark"] .stat--navy .stat__icon { background: rgba(255, 255, 255, .08); color: #bfdbfe; }
 .stat--navy .stat__icon { background: var(--blue-50); color: var(--navy-700); }
 .stat--blue { color: var(--blue-600); }
 .stat--blue .stat__icon { background: var(--blue-50); color: var(--blue-600); }
@@ -987,6 +995,14 @@ input.radio { width: 1rem; height: 1rem; accent-color: var(--blue-600); cursor: 
 .form-message.error { display: block; background: var(--red-50); color: var(--red-700); border-color: var(--red-100); }
 .form-message.success { display: block; background: var(--emerald-50); color: var(--emerald-700); border-color: var(--emerald-100); }
 .form-message.warning { display: block; background: var(--amber-50); color: var(--amber-700); border-color: var(--amber-100); }
+/* Dark mode: keep notice banners on-theme instead of a glaring cream box */
+[data-theme="dark"] .form-message.error { background: rgba(239, 68, 68, .14); color: #fca5a5; border-color: rgba(239, 68, 68, .35); }
+[data-theme="dark"] .form-message.success { background: rgba(16, 185, 129, .14); color: #6ee7b7; border-color: rgba(16, 185, 129, .35); }
+[data-theme="dark"] .form-message.warning { background: rgba(245, 158, 11, .14); color: #fcd34d; border-color: rgba(245, 158, 11, .35); }
+/* Dark mode: hint + placeholder text was too dim to read */
+[data-theme="dark"] .field__hint { color: #9fb0c8; }
+[data-theme="dark"] input.input::placeholder,
+[data-theme="dark"] textarea.textarea::placeholder { color: #9aa9c2; }
 
 /* --------------------------------------------------------------------------
    10. DATA-VIZ & AI ELEMENTS
@@ -1671,6 +1687,8 @@ body h1.display { font-size: clamp(2.5rem, 5.4vw, 4.25rem); }
   width: 100%;
   max-width: 27rem;
 }
+/* Wider auth card for longer forms (e.g. submit a complaint) — same card look as login */
+.auth__wrap--wide { max-width: 38rem; }
 .auth__brand {
   display: flex;
   flex-direction: column;
@@ -1825,6 +1843,29 @@ body h1.display { font-size: clamp(2.5rem, 5.4vw, 4.25rem); }
 /* Prevent grid items from forcing horizontal overflow */
 .grid > * { min-width: 0; }
 .grid-2 > *, .grid-3 > *, .field { max-width: 100%; }
+
+/* Table pills (status / sentiment / priority) must stay on one line —
+   "In Progress" was wrapping mid-label in narrow columns. */
+td .rounded-full,
+td .badge { white-space: nowrap; }
+
+/* Safety net: admin tables sit on white cards. A cell with no explicit text
+   color inherits the body color — which is near-white in dark mode, i.e.
+   invisible. Give every body cell a readable base color; any `text-*`
+   utility class still wins over this element selector. */
+tbody td { color: #334155; }
+
+/* Safety net: filter-bar / form selects + inputs on the light admin pages
+   (`main.ml-64` is admin-only) also inherit the invisible body color in dark
+   mode — "All Status", "In Progress", date fields etc. were unreadable.
+   Pin them to a readable ink color with a matching dropdown + placeholder. */
+main.ml-64 select,
+main.ml-64 input,
+main.ml-64 textarea { color: #1e293b; }
+main.ml-64 select::placeholder,
+main.ml-64 input::placeholder,
+main.ml-64 textarea::placeholder { color: #64748b; }
+main.ml-64 option { color: #1e293b; background: #ffffff; }
 
 /* --------------------------------------------------------------------------
    FULL-PAGE FORM SHELL (submit a complaint, settings-style pages)

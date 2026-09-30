@@ -25,10 +25,19 @@ _NEG_PATTERNS = re.compile(
 )
 
 # Strong negative language -> clearly frustrated, not just a mild complaint.
+# Mirror of the dataset generator's STRONG_NEG pool (v6 convention): the
+# sentiment/priority ground truth labels every text containing one of these
+# phrases as 'negative', everything milder is 'neutral'.
 _STRONG_NEG = re.compile(
     r'\b(stol\w*|steal\w*|theft|robbery|harass\w*|abuse|threaten\w*|assault|'
-    r'unsafe|unhygienic|filthy|rotten|disgust\w*|terribl\w*|horribl\w*|awful|'
-    r'stale|spoiled|foul|smelly|infest\w*)\b',
+    r'unsafe|unhygienic|filthy|rotten|stale|spoiled|foul|smelly|infest\w*|'
+    r'disgust\w*|terribl\w*|horribl\w*|awful|broken|crack(?:ed)?|'
+    r'leak(?:ing|s|ed)?|malfunction\w*|not\s+work(?:ing)?|not\s+fixed|'
+    r'never\s+fixed|no\s+(?:response|reply|action|update)|'
+    r'no\s+one\s+(?:responds|listens|cares)|nobody\s+(?:responds|listens|cares)|'
+    r'ignored|ignor\w*|refus\w*|overcharg\w*|rude|delay(?:s|ed)?|serious|'
+    r'emergency|danger\w*|damag\w*|unresolved|fight\w*|insult\w*|cheat\w*|'
+    r'molest\w*)\b',
     re.IGNORECASE
 )
 
@@ -75,12 +84,12 @@ def analyze_sentiment_rules(text):
     """
     if _STRONG_NEG.search(text):
         label, score = 'Negative', -0.7
-    elif _NEG_PATTERNS.search(text):
-        label, score = 'Negative', -0.25
     elif _APPRECIATION.search(text) and not _NEG_PATTERNS.search(text):
         label, score = 'Positive', 0.7
     elif _REQUEST.search(text) and not _APPRECIATION.search(text):
         label, score = 'Neutral', 0.0
+    elif _NEG_PATTERNS.search(text):
+        label, score = 'Neutral', -0.15
     else:
         label, score = 'Neutral', 0.0
 

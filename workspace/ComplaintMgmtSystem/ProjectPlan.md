@@ -10,8 +10,8 @@
 ### 11. Sentiment & Priority Models (ML-first) — Session 2
 - [x] **12,000-row sentiment/priority dataset** (`data/sentiment_dataset.csv`) — hand-written curation (`source=claude`) + template-driven synthesis (`source=synth`); sentiment & priority ground truth decided at generation time, independent of any classifier
 - [x] **Trained sentiment + priority Multinomial Naive Bayes models** (same from-scratch implementation as the category classifier) → `data/sentiment_model.json`, `data/priority_model.json`
-  - Sentiment test accuracy **99.71%** / macro-F1 **0.9971**
-  - Priority test accuracy **99.21%** / macro-F1 **0.9921** — v5 dataset: priority is a deterministic text-only rule with class-locked High/Medium phrase pools, so the model learns exactly the rule (see notebook 10 per-class tables)
+  - Sentiment test accuracy **95.12%** / macro-F1 **0.9406**
+  - Priority test accuracy **98.12%** / macro-F1 **0.9833** — word-level features only (no phrase bigrams) so exact template phrases are not memorized; train 97.88% / test 98.12% confirm no overfitting (see notebook 10 per-class tables)
 - [x] **Dataset hygiene** — `--fresh`/`--rebuild` modes: dedupe, whitespace/punctuation normalization, drop rows <10 chars; all synthetic rows regenerated from class-locked pools (mixed-rule rows removed)
 - [x] **ML-first pipeline with rule fallback** — `ml/env.py` lazy-loads both models; `ml/sentiment.py` + `ml/priority.py` consult them first and fall back to the legacy lexicon/keyword rules when unconfident or absent (app keeps working pre-training)
 - [x] **`ml/sentiment_training_log.json`** — single source of truth for test metrics (web pages + notebooks never drift)

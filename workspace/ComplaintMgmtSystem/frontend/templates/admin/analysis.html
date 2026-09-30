@@ -1,17 +1,38 @@
 {% extends "base.html" %}
 {% block title %}Sentiment × Priority — Analysis{% endblock %}
 {% block content %}
-<div class="min-h-screen bg-[#f6f8fb]">
-  <div class="p-6 max-w-7xl mx-auto">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h1 class="text-2xl font-bold text-[#0a1628]">Sentiment × Priority Analysis</h1>
-        <p class="text-sm text-gray-500 mt-1">Who is being heard — and who is still upset.</p>
-      </div>
-      <a href="{{ url_for('admin_complaints', priority='High') }}"
-         class="bg-[#d32f2f] hover:bg-[#b71c1c] text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2">
-        <span class="material-symbols-outlined text-sm">warning</span>Open High-priority queue</a>
-    </div>
+<aside class="fixed left-0 h-full w-64 bg-[#0a1628] text-white shadow-xl flex flex-col py-6 hidden md:flex z-50">
+<a href="{{ url_for('admin_dashboard') }}" class="px-6 mb-8 flex items-center gap-3 hover:opacity-80">
+<span class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg"><span class="material-symbols-outlined text-white">gavel</span></span>
+<span class="text-xl font-bold text-white tracking-tight">Complainify</span>
+</a>
+<div class="px-4 mb-6 flex items-center gap-3 border-b border-white/10 pb-4 mx-2">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm shadow-md">{{ admin_name[:2]|upper }}</div>
+<div><p class="text-sm text-white font-medium truncate">{{ admin_name }}</p><p class="text-[10px] text-red-300 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-400 inline-block"></span> Administrator</p></div>
+</div>
+<nav class="flex-1 px-2 space-y-0.5">
+<a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">dashboard</span>Dashboard</a>
+<a href="{{ url_for('admin_complaints') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">assignment</span>All Complaints</a>
+<a href="{{ url_for('track_complaint') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">search</span>Track Status</a>
+<a href="{{ url_for('admin_audit_logs') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">history</span>Audit Logs</a>
+<a href="{{ url_for('admin_users') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">people</span>Users</a>
+<a href="{{ url_for('admin_training_logs') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">model_training</span>Training</a>
+<a href="{{ url_for('admin_analysis') }}" class="flex items-center gap-3 bg-[#d32f2f]/20 text-white rounded-lg px-4 py-3 text-sm font-medium border-l-2 border-[#d32f2f]"><span class="material-symbols-outlined text-sm">grid_view</span>Sentiment x Priority</a>
+<a href="{{ url_for('admin_report') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">bar_chart</span>Reports</a>
+</nav>
+<div class="px-2 space-y-0.5 border-t border-white/10 pt-3 mt-2 mx-2">
+<a href="{{ url_for('admin_settings') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">settings</span>Settings</a>
+<a href="{{ url_for('logout') }}" class="flex items-center gap-3 text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg px-4 py-3 text-sm transition-all mt-1"><span class="material-symbols-outlined text-sm">logout</span>Sign Out</a>
+</div>
+</aside>
+<main class="ml-64 min-h-screen flex flex-col bg-[#f0f2f5]">
+<header class="bg-white px-6 py-3 flex justify-between items-center sticky top-0 z-40 shadow-sm border-b border-gray-200">
+<div><h1 class="text-lg font-bold text-[#0a1628] flex items-center gap-2"><span class="material-symbols-outlined text-[#d32f2f]">grid_view</span>Sentiment × Priority</h1><p class="text-xs text-gray-500 ml-8">Who is being heard — and who is still upset.</p></div>
+<div class="flex items-center gap-3">
+<a href="{{ url_for('admin_complaints', priority='High') }}" class="bg-[#d32f2f] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#b71c1c] transition-colors flex items-center gap-1.5"><span class="material-symbols-outlined text-sm">warning</span>High-priority queue</a>
+</div>
+</header>
+  <div class="p-6 max-w-7xl mx-auto w-full">
 
     {% if a.error %}
     <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-5 mb-6 text-sm">
@@ -148,5 +169,5 @@
     </div>
     {% endif %}
   </div>
-</div>
+</main>
 {% endblock %}

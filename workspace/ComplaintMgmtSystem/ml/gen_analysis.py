@@ -50,7 +50,7 @@ def fetch_rows():
         with conn.cursor() as cur:
             cur.execute("""SELECT category, priority, sentiment, status,
                 ticket_id, subject, description, fullname,
-                date_format(created_at, '%%d %%b %%Y') date
+                date_format(created_at, '%d %b %Y') date
                 FROM complaints
                 WHERE priority IN ('High', 'Medium', 'Low')
                   AND sentiment IN ('Positive', 'Neutral', 'Negative')""")

@@ -1,6 +1,350 @@
 {
   "versions": [
     {
+      "id": "v20260927_104503",
+      "saved_at": "2026-09-27 10:45:03",
+      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260927_104503.json",
+      "metrics": {
+        "accuracy": 96.81,
+        "macro_f1": 0.9687,
+        "train_samples": 5772,
+        "test_samples": 1443,
+        "per_class": [
+          {
+            "category": "IT Support",
+            "precision": 0.9735,
+            "recall": 0.9866,
+            "f1": 0.98,
+            "samples": 149
+          },
+          {
+            "category": "Hostels",
+            "precision": 0.9408,
+            "recall": 0.9408,
+            "f1": 0.9408,
+            "samples": 152
+          },
+          {
+            "category": "Academics",
+            "precision": 0.9728,
+            "recall": 0.9533,
+            "f1": 0.963,
+            "samples": 150
+          },
+          {
+            "category": "Fees / Finance",
+            "precision": 0.9662,
+            "recall": 0.9597,
+            "f1": 0.963,
+            "samples": 149
+          },
+          {
+            "category": "Maintenance",
+            "precision": 0.9304,
+            "recall": 0.9484,
+            "f1": 0.9393,
+            "samples": 155
+          },
+          {
+            "category": "Transport",
+            "precision": 0.9875,
+            "recall": 0.9937,
+            "f1": 0.9906,
+            "samples": 159
+          },
+          {
+            "category": "Security / Discipline",
+            "precision": 0.9574,
+            "recall": 0.9854,
+            "f1": 0.9712,
+            "samples": 137
+          },
+          {
+            "category": "Administration",
+            "precision": 0.9766,
+            "recall": 0.9191,
+            "f1": 0.947,
+            "samples": 136
+          },
+          {
+            "category": "Library",
+            "precision": 0.9924,
+            "recall": 1.0,
+            "f1": 0.9962,
+            "samples": 130
+          },
+          {
+            "category": "Canteen",
+            "precision": 0.9921,
+            "recall": 1.0,
+            "f1": 0.996,
+            "samples": 126
+          }
+        ],
+        "new_rows_appended": 2,
+        "validated_total": 5,
+        "validated_rejected": 0
+      }
+    },
+    {
+      "id": "v20260926_225052",
+      "saved_at": "2026-09-26 22:50:52",
+      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260926_225052.json",
+      "metrics": {
+        "accuracy": 97.3,
+        "macro_f1": 0.9727,
+        "train_samples": 5770,
+        "test_samples": 1443,
+        "per_class": [
+          {
+            "category": "IT Support",
+            "precision": 0.9805,
+            "recall": 0.9869,
+            "f1": 0.9837,
+            "samples": 153
+          },
+          {
+            "category": "Hostels",
+            "precision": 0.9478,
+            "recall": 0.9071,
+            "f1": 0.927,
+            "samples": 140
+          },
+          {
+            "category": "Academics",
+            "precision": 0.9811,
+            "recall": 0.9873,
+            "f1": 0.9842,
+            "samples": 158
+          },
+          {
+            "category": "Fees / Finance",
+            "precision": 0.9664,
+            "recall": 0.9583,
+            "f1": 0.9623,
+            "samples": 120
+          },
+          {
+            "category": "Maintenance",
+            "precision": 0.9396,
+            "recall": 0.9589,
+            "f1": 0.9492,
+            "samples": 146
+          },
+          {
+            "category": "Transport",
+            "precision": 0.9857,
+            "recall": 0.9857,
+            "f1": 0.9857,
+            "samples": 140
+          },
+          {
+            "category": "Security / Discipline",
+            "precision": 0.962,
+            "recall": 0.9744,
+            "f1": 0.9682,
+            "samples": 156
+          },
+          {
+            "category": "Administration",
+            "precision": 0.9804,
+            "recall": 0.9677,
+            "f1": 0.974,
+            "samples": 155
+          },
+          {
+            "category": "Library",
+            "precision": 0.9925,
+            "recall": 1.0,
+            "f1": 0.9962,
+            "samples": 132
+          },
+          {
+            "category": "Canteen",
+            "precision": 0.9931,
+            "recall": 1.0,
+            "f1": 0.9965,
+            "samples": 143
+          }
+        ],
+        "new_rows_appended": 0,
+        "validated_total": 3,
+        "validated_rejected": 0
+      }
+    },
+    {
+      "id": "v20260926_225040",
+      "saved_at": "2026-09-26 22:50:40",
+      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260926_225040.json",
+      "metrics": {
+        "accuracy": 96.67,
+        "macro_f1": 0.9671,
+        "train_samples": 5770,
+        "test_samples": 1443,
+        "per_class": [
+          {
+            "category": "IT Support",
+            "precision": 0.9805,
+            "recall": 0.9869,
+            "f1": 0.9837,
+            "samples": 153
+          },
+          {
+            "category": "Hostels",
+            "precision": 0.9267,
+            "recall": 0.9392,
+            "f1": 0.9329,
+            "samples": 148
+          },
+          {
+            "category": "Academics",
+            "precision": 0.9769,
+            "recall": 0.9338,
+            "f1": 0.9549,
+            "samples": 136
+          },
+          {
+            "category": "Fees / Finance",
+            "precision": 0.9346,
+            "recall": 0.9862,
+            "f1": 0.9597,
+            "samples": 145
+          },
+          {
+            "category": "Maintenance",
+            "precision": 0.9485,
+            "recall": 0.9416,
+            "f1": 0.9451,
+            "samples": 137
+          },
+          {
+            "category": "Transport",
+            "precision": 0.9756,
+            "recall": 0.9938,
+            "f1": 0.9846,
+            "samples": 161
+          },
+          {
+            "category": "Security / Discipline",
+            "precision": 0.9718,
+            "recall": 0.965,
+            "f1": 0.9684,
+            "samples": 143
+          },
+          {
+            "category": "Administration",
+            "precision": 0.9809,
+            "recall": 0.9277,
+            "f1": 0.9536,
+            "samples": 166
+          },
+          {
+            "category": "Library",
+            "precision": 0.9921,
+            "recall": 1.0,
+            "f1": 0.996,
+            "samples": 125
+          },
+          {
+            "category": "Canteen",
+            "precision": 0.9847,
+            "recall": 1.0,
+            "f1": 0.9923,
+            "samples": 129
+          }
+        ],
+        "new_rows_appended": 0,
+        "validated_total": 3,
+        "validated_rejected": 0
+      }
+    },
+    {
+      "id": "v20260926_225034",
+      "saved_at": "2026-09-26 22:50:34",
+      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260926_225034.json",
+      "metrics": {
+        "accuracy": 96.53,
+        "macro_f1": 0.9652,
+        "train_samples": 5770,
+        "test_samples": 1443,
+        "per_class": [
+          {
+            "category": "IT Support",
+            "precision": 0.9797,
+            "recall": 0.9864,
+            "f1": 0.9831,
+            "samples": 147
+          },
+          {
+            "category": "Hostels",
+            "precision": 0.9225,
+            "recall": 0.9097,
+            "f1": 0.9161,
+            "samples": 144
+          },
+          {
+            "category": "Academics",
+            "precision": 0.9925,
+            "recall": 0.9708,
+            "f1": 0.9815,
+            "samples": 137
+          },
+          {
+            "category": "Fees / Finance",
+            "precision": 0.956,
+            "recall": 0.9744,
+            "f1": 0.9651,
+            "samples": 156
+          },
+          {
+            "category": "Maintenance",
+            "precision": 0.9209,
+            "recall": 0.9412,
+            "f1": 0.9309,
+            "samples": 136
+          },
+          {
+            "category": "Transport",
+            "precision": 0.9686,
+            "recall": 0.9809,
+            "f1": 0.9747,
+            "samples": 157
+          },
+          {
+            "category": "Security / Discipline",
+            "precision": 0.9699,
+            "recall": 0.9485,
+            "f1": 0.9591,
+            "samples": 136
+          },
+          {
+            "category": "Administration",
+            "precision": 0.972,
+            "recall": 0.9392,
+            "f1": 0.9553,
+            "samples": 148
+          },
+          {
+            "category": "Library",
+            "precision": 0.986,
+            "recall": 1.0,
+            "f1": 0.993,
+            "samples": 141
+          },
+          {
+            "category": "Canteen",
+            "precision": 0.986,
+            "recall": 1.0,
+            "f1": 0.993,
+            "samples": 141
+          }
+        ],
+        "new_rows_appended": 0,
+        "validated_total": 3,
+        "validated_rejected": 0
+      }
+    },
+    {
       "id": "v20260808_132037",
       "saved_at": "2026-08-08 13:20:37",
       "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260808_132037.json",
@@ -515,351 +859,7 @@
         "validated_total": 0,
         "validated_rejected": 0
       }
-    },
-    {
-      "id": "v20260807_200111",
-      "saved_at": "2026-08-07 20:01:11",
-      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260807_200111.json",
-      "metrics": {
-        "accuracy": 96.67,
-        "macro_f1": 0.9675,
-        "train_samples": 5768,
-        "test_samples": 1442,
-        "per_class": [
-          {
-            "category": "IT Support",
-            "precision": 0.971,
-            "recall": 0.9926,
-            "f1": 0.9817,
-            "samples": 135
-          },
-          {
-            "category": "Hostels",
-            "precision": 0.9408,
-            "recall": 0.9346,
-            "f1": 0.9377,
-            "samples": 153
-          },
-          {
-            "category": "Academics",
-            "precision": 0.9664,
-            "recall": 0.9231,
-            "f1": 0.9443,
-            "samples": 156
-          },
-          {
-            "category": "Fees / Finance",
-            "precision": 0.981,
-            "recall": 0.9748,
-            "f1": 0.9779,
-            "samples": 159
-          },
-          {
-            "category": "Maintenance",
-            "precision": 0.9326,
-            "recall": 0.9881,
-            "f1": 0.9595,
-            "samples": 168
-          },
-          {
-            "category": "Transport",
-            "precision": 0.9701,
-            "recall": 0.9559,
-            "f1": 0.963,
-            "samples": 136
-          },
-          {
-            "category": "Security / Discipline",
-            "precision": 0.9803,
-            "recall": 0.9613,
-            "f1": 0.9707,
-            "samples": 155
-          },
-          {
-            "category": "Administration",
-            "precision": 0.952,
-            "recall": 0.9444,
-            "f1": 0.9482,
-            "samples": 126
-          },
-          {
-            "category": "Library",
-            "precision": 0.9923,
-            "recall": 1.0,
-            "f1": 0.9961,
-            "samples": 129
-          },
-          {
-            "category": "Canteen",
-            "precision": 0.9921,
-            "recall": 1.0,
-            "f1": 0.996,
-            "samples": 125
-          }
-        ],
-        "new_rows_appended": 0,
-        "validated_total": 0,
-        "validated_rejected": 0
-      }
-    },
-    {
-      "id": "v20260807_200043",
-      "saved_at": "2026-08-07 20:00:43",
-      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260807_200043.json",
-      "metrics": {
-        "accuracy": 96.53,
-        "macro_f1": 0.9657,
-        "train_samples": 5768,
-        "test_samples": 1442,
-        "per_class": [
-          {
-            "category": "IT Support",
-            "precision": 0.979,
-            "recall": 0.9929,
-            "f1": 0.9859,
-            "samples": 141
-          },
-          {
-            "category": "Hostels",
-            "precision": 0.9527,
-            "recall": 0.9276,
-            "f1": 0.94,
-            "samples": 152
-          },
-          {
-            "category": "Academics",
-            "precision": 0.9787,
-            "recall": 0.9262,
-            "f1": 0.9517,
-            "samples": 149
-          },
-          {
-            "category": "Fees / Finance",
-            "precision": 0.964,
-            "recall": 0.971,
-            "f1": 0.9675,
-            "samples": 138
-          },
-          {
-            "category": "Maintenance",
-            "precision": 0.9226,
-            "recall": 0.981,
-            "f1": 0.9509,
-            "samples": 158
-          },
-          {
-            "category": "Transport",
-            "precision": 0.9565,
-            "recall": 0.9778,
-            "f1": 0.967,
-            "samples": 135
-          },
-          {
-            "category": "Security / Discipline",
-            "precision": 0.9747,
-            "recall": 0.9686,
-            "f1": 0.9716,
-            "samples": 159
-          },
-          {
-            "category": "Administration",
-            "precision": 0.9621,
-            "recall": 0.9137,
-            "f1": 0.9373,
-            "samples": 139
-          },
-          {
-            "category": "Library",
-            "precision": 0.9928,
-            "recall": 1.0,
-            "f1": 0.9964,
-            "samples": 138
-          },
-          {
-            "category": "Canteen",
-            "precision": 0.9779,
-            "recall": 1.0,
-            "f1": 0.9888,
-            "samples": 133
-          }
-        ],
-        "new_rows_appended": 0,
-        "validated_total": 0,
-        "validated_rejected": 0
-      }
-    },
-    {
-      "id": "v20260807_200002",
-      "saved_at": "2026-08-07 20:00:02",
-      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260807_200002.json",
-      "metrics": {
-        "accuracy": 96.19,
-        "macro_f1": 0.9624,
-        "train_samples": 5768,
-        "test_samples": 1442,
-        "per_class": [
-          {
-            "category": "IT Support",
-            "precision": 0.964,
-            "recall": 0.9853,
-            "f1": 0.9745,
-            "samples": 136
-          },
-          {
-            "category": "Hostels",
-            "precision": 0.9635,
-            "recall": 0.9167,
-            "f1": 0.9395,
-            "samples": 144
-          },
-          {
-            "category": "Academics",
-            "precision": 0.9317,
-            "recall": 0.9494,
-            "f1": 0.9404,
-            "samples": 158
-          },
-          {
-            "category": "Fees / Finance",
-            "precision": 0.9643,
-            "recall": 0.9507,
-            "f1": 0.9574,
-            "samples": 142
-          },
-          {
-            "category": "Maintenance",
-            "precision": 0.9314,
-            "recall": 0.9702,
-            "f1": 0.9504,
-            "samples": 168
-          },
-          {
-            "category": "Transport",
-            "precision": 0.9577,
-            "recall": 0.9927,
-            "f1": 0.9749,
-            "samples": 137
-          },
-          {
-            "category": "Security / Discipline",
-            "precision": 0.973,
-            "recall": 0.96,
-            "f1": 0.9664,
-            "samples": 150
-          },
-          {
-            "category": "Administration",
-            "precision": 0.968,
-            "recall": 0.8963,
-            "f1": 0.9308,
-            "samples": 135
-          },
-          {
-            "category": "Library",
-            "precision": 0.9924,
-            "recall": 1.0,
-            "f1": 0.9962,
-            "samples": 130
-          },
-          {
-            "category": "Canteen",
-            "precision": 0.9861,
-            "recall": 1.0,
-            "f1": 0.993,
-            "samples": 142
-          }
-        ],
-        "new_rows_appended": 0,
-        "validated_total": 0,
-        "validated_rejected": 0
-      }
-    },
-    {
-      "id": "v20260807_195723",
-      "saved_at": "2026-08-07 19:57:23",
-      "path": "E:/Project-VI/workspace/ComplaintMgmtSystem/ml/models/model_v20260807_195723.json",
-      "metrics": {
-        "accuracy": 95.77,
-        "macro_f1": 0.9586,
-        "train_samples": 5768,
-        "test_samples": 1442,
-        "per_class": [
-          {
-            "category": "IT Support",
-            "precision": 0.965,
-            "recall": 0.965,
-            "f1": 0.965,
-            "samples": 143
-          },
-          {
-            "category": "Hostels",
-            "precision": 0.9248,
-            "recall": 0.9044,
-            "f1": 0.9145,
-            "samples": 136
-          },
-          {
-            "category": "Academics",
-            "precision": 0.9515,
-            "recall": 0.9691,
-            "f1": 0.9602,
-            "samples": 162
-          },
-          {
-            "category": "Fees / Finance",
-            "precision": 0.9623,
-            "recall": 0.9745,
-            "f1": 0.9684,
-            "samples": 157
-          },
-          {
-            "category": "Maintenance",
-            "precision": 0.9301,
-            "recall": 0.9301,
-            "f1": 0.9301,
-            "samples": 143
-          },
-          {
-            "category": "Transport",
-            "precision": 0.9193,
-            "recall": 0.9801,
-            "f1": 0.9487,
-            "samples": 151
-          },
-          {
-            "category": "Security / Discipline",
-            "precision": 0.979,
-            "recall": 0.9396,
-            "f1": 0.9589,
-            "samples": 149
-          },
-          {
-            "category": "Administration",
-            "precision": 0.9808,
-            "recall": 0.9273,
-            "f1": 0.9533,
-            "samples": 165
-          },
-          {
-            "category": "Library",
-            "precision": 0.9823,
-            "recall": 1.0,
-            "f1": 0.9911,
-            "samples": 111
-          },
-          {
-            "category": "Canteen",
-            "precision": 0.9921,
-            "recall": 1.0,
-            "f1": 0.996,
-            "samples": 125
-          }
-        ],
-        "new_rows_appended": 0,
-        "validated_total": 0,
-        "validated_rejected": 0
-      }
     }
   ],
-  "active": "v20260808_132037"
+  "active": "v20260927_104503"
 }

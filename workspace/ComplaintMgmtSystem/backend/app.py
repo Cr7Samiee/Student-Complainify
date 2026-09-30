@@ -76,6 +76,13 @@ def hash_pw(pw):
 def gen_ticket():
     return 'CMP-' + os.urandom(2).hex().upper()
 
+ANON_EMAIL_DOMAIN = '@anonymous.complainify'
+
+def is_anon_email(email):
+    """Anonymous (incognito) complaints carry a placeholder address.
+    No mail must ever go to it — department routing is the only mail allowed."""
+    return bool(email) and email.lower().endswith(ANON_EMAIL_DOMAIN)
+
 CATEGORIES = ['Academics', 'Hostels', 'IT Support', 'Infrastructure', 'Financial Services',
               'Administrative', 'Security', 'Maintenance', 'Transport', 'Canteen', 'Library', 'Other']
 
@@ -637,7 +644,7 @@ def admin_dashboard():
         return redirect(url_for('admin_login'))
     conn = get_db(); cur = conn.cursor()
     cur.execute("""SELECT ticket_id,fullname student,category,priority,status,subject,sentiment,
-        date_format(created_at,'%%d %%b %%Y') date,
+        date_format(created_at,'%d %b %Y') date,
         assigned_to,validated
         FROM complaints ORDER BY created_at DESC""")
     all_complaints = cur.fetchall()
@@ -799,7 +806,7 @@ def admin_assign(ticket_id):
     cur.execute("SELECT email, subject, user_id FROM complaints WHERE ticket_id=%s", (ticket_id,))
     c = cur.fetchone()
     cur.close(); conn.close()
-    if c and c['email'] and SMTP_CONFIG['user']:
+    if c and c['email'] and not is_anon_email(c['email']) and SMTP_CONFIG['user']:
         send_email_notification(c['email'],
             f'Complaint {ticket_id} - Assigned to {assigned_to}',
             f'Dear Student,\n\nYour complaint ({ticket_id}) has been assigned to {assigned_to}.\n\nWe will resolve it shortly.\n\nRegards,\nComplainify Team')
@@ -846,7 +853,7 @@ def admin_update_status(ticket_id):
     cur.execute("SELECT email, subject, user_id FROM complaints WHERE ticket_id=%s", (ticket_id,))
     c = cur.fetchone()
     cur.close(); conn.close()
-    if c and c['email'] and SMTP_CONFIG['user']:
+    if c and c['email'] and not is_anon_email(c['email']) and SMTP_CONFIG['user']:
         send_email_notification(c['email'],
             f'Complaint {ticket_id} - Status Updated to {status}',
             f'Dear Student,\n\nYour complaint ({ticket_id}) status has been updated to: {status}.\n\nNotes: {admin_notes or "N/A"}\n\nRegards,\nComplainify Team')
@@ -906,11 +913,13 @@ def admin_resend_email(ticket_id):
     conn = get_db(); cur = conn.cursor()
     cur.execute("SELECT email, ticket_id, status, subject FROM complaints WHERE ticket_id=%s", (ticket_id,))
     c = cur.fetchone()
-    if c and c['email'] and SMTP_CONFIG['user']:
+    if c and c['email'] and not is_anon_email(c['email']) and SMTP_CONFIG['user']:
         send_email_notification(c['email'],
             f'Complaint {ticket_id} - Status: {c["status"]}',
             f'Dear Student,\n\nYour complaint ({ticket_id}) is currently: {c["status"]}.\n\nRegards,\nComplainify Team')
         flash('Email resent.', 'success')
+    elif c and c['email'] and is_anon_email(c['email']):
+        flash('Anonymous complaint — no student email sent (department mail only).', 'warning')
     else:
         flash('Email not sent (no recipient or no SMTP config).', 'warning')
     cur.close(); conn.close()
@@ -1506,6 +1515,29 @@ def api_predict_top3():
         return jsonify({'error': 'No text provided'}), 400
     result = predict_top3(data['text'])
     return jsonify({'predictions': result})
+
+@app.route('/api/analyze', methods=['POST'])
+def api_analyze():
+    data = request.get_json()
+    if not data or 'text' not in data:
+        return jsonify({'error': 'No text provided'}), 400
+    text = data['text']
+    category_result = categorize(text)
+    anomaly = detect_anomaly(text)
+    sentiment_result = analyze_sentiment(text)
+    priority, priority_score, priority_reason = compute_priority(
+        text, sentiment_result['label'], sentiment_result['score'], anomaly)
+    return jsonify({
+        'category': category_result['category'],
+        'confidence': round(category_result['confidence'], 4),
+        'sentiment': sentiment_result['label'],
+        'sentiment_score': round(sentiment_result['score'], 4),
+        'priority': priority,
+        'priority_score': priority_score,
+        'priority_reason': priority_reason,
+        'is_anomaly': anomaly['is_anomaly'],
+        'anomaly_flags': anomaly['flags']
+    })
 
 @app.route('/api/predict-resolution')
 def api_predict_resolution():

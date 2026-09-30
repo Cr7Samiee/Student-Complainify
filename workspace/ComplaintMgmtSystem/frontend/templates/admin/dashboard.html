@@ -83,13 +83,13 @@
 <p class="text-2xl font-bold text-blue-600 mt-1">{{ card.macro_f1 if card.macro_f1 is not none else 'N/A' }}</p>
 </div>
 </div>
-<p class="text-[10px] text-gray-400 mt-2">{{ card.last_trained[:10] if card.last_trained else '-' }} · {{ card.train_samples }} train / {{ card.test_samples }} test</p>
+<p class="text-[10px] text-gray-500 mt-2">{{ card.last_trained[:10] if card.last_trained else '-' }} · {{ card.train_samples }} train / {{ card.test_samples }} test</p>
 {% if card.per_class %}
 <table class="w-full mt-3 text-[11px]">
 <thead><tr class="text-gray-400 border-b border-gray-100"><th class="text-left py-1 font-medium">Class</th><th class="text-right py-1 font-medium">P</th><th class="text-right py-1 font-medium">R</th><th class="text-right py-1 font-medium">F1</th><th class="text-right py-1 font-medium">Samples</th></tr></thead>
 <tbody>
 {% for pc in card.per_class %}
-<tr class="border-b border-gray-50"><td class="py-1 font-semibold text-[#0a1628]">{{ pc.label }}</td><td class="py-1 text-right">{{ pc.precision|round(2) }}</td><td class="py-1 text-right">{{ pc.recall|round(2) }}</td><td class="py-1 text-right font-bold text-[#0a1628]">{{ pc.f1|round(2) }}</td><td class="py-1 text-right text-gray-400">{{ pc.support }}</td></tr>
+<tr class="border-b border-gray-50"><td class="py-1 font-semibold text-[#0a1628]">{{ pc.label }}</td><td class="py-1 text-right">{{ pc.precision|round(2) }}</td><td class="py-1 text-right">{{ pc.recall|round(2) }}</td><td class="py-1 text-right font-bold text-[#0a1628]">{{ pc.f1|round(2) }}</td><td class="py-1 text-right text-gray-500">{{ pc.support }}</td></tr>
 {% endfor %}
 </tbody>
 </table>

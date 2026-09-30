@@ -1,7 +1,7 @@
 {
-  "last_version": "v20260808_132037",
-  "last_trained": "2026-08-08 13:20:37",
-  "train_samples": 5770,
+  "last_version": "v20260927_104503",
+  "last_trained": "2026-09-27 10:45:03",
+  "train_samples": 5772,
   "test_samples": 1443,
   "accuracy": 96.81,
   "note": null,
@@ -9,93 +9,77 @@
   "per_class": [
     {
       "category": "IT Support",
-      "precision": 0.9812,
-      "recall": 0.9752,
-      "f1": 0.9782,
-      "samples": 161
+      "precision": 0.9735,
+      "recall": 0.9866,
+      "f1": 0.98,
+      "samples": 149
     },
     {
       "category": "Hostels",
-      "precision": 0.9448,
-      "recall": 0.9448,
-      "f1": 0.9448,
-      "samples": 145
+      "precision": 0.9408,
+      "recall": 0.9408,
+      "f1": 0.9408,
+      "samples": 152
     },
     {
       "category": "Academics",
-      "precision": 0.9718,
-      "recall": 0.9452,
-      "f1": 0.9583,
-      "samples": 146
+      "precision": 0.9728,
+      "recall": 0.9533,
+      "f1": 0.963,
+      "samples": 150
     },
     {
       "category": "Fees / Finance",
-      "precision": 0.9597,
-      "recall": 0.9728,
-      "f1": 0.9662,
-      "samples": 147
+      "precision": 0.9662,
+      "recall": 0.9597,
+      "f1": 0.963,
+      "samples": 149
     },
     {
       "category": "Maintenance",
-      "precision": 0.9367,
-      "recall": 0.9548,
-      "f1": 0.9457,
+      "precision": 0.9304,
+      "recall": 0.9484,
+      "f1": 0.9393,
       "samples": 155
     },
     {
       "category": "Transport",
-      "precision": 0.9645,
-      "recall": 1.0,
-      "f1": 0.9819,
-      "samples": 163
+      "precision": 0.9875,
+      "recall": 0.9937,
+      "f1": 0.9906,
+      "samples": 159
     },
     {
       "category": "Security / Discipline",
-      "precision": 0.9784,
-      "recall": 0.9714,
-      "f1": 0.9749,
-      "samples": 140
+      "precision": 0.9574,
+      "recall": 0.9854,
+      "f1": 0.9712,
+      "samples": 137
     },
     {
       "category": "Administration",
-      "precision": 0.9697,
-      "recall": 0.9209,
-      "f1": 0.9446,
-      "samples": 139
+      "precision": 0.9766,
+      "recall": 0.9191,
+      "f1": 0.947,
+      "samples": 136
     },
     {
       "category": "Library",
-      "precision": 0.9847,
+      "precision": 0.9924,
       "recall": 1.0,
-      "f1": 0.9923,
-      "samples": 129
+      "f1": 0.9962,
+      "samples": 130
     },
     {
       "category": "Canteen",
-      "precision": 1.0,
+      "precision": 0.9921,
       "recall": 1.0,
-      "f1": 1.0,
-      "samples": 118
+      "f1": 0.996,
+      "samples": 126
     }
   ],
-  "new_verified_used": 1,
+  "new_verified_used": 2,
   "history": [
-    {
-      "date": "2026-07-23 18:54",
-      "accuracy": 97.2
-    },
-    {
-      "date": "2026-07-23 18:55",
-      "accuracy": 97.1
-    },
-    {
-      "date": "2026-07-23 18:58",
-      "accuracy": 96.4
-    },
-    {
-      "date": "2026-07-23 19:20",
-      "accuracy": 96.5
-    },
     {
       "date": "2026-07-23 19:21",
       "accuracy": 97.3
@@ -158,6 +142,22 @@
     },
     {
       "date": "2026-08-08 13:20",
+      "accuracy": 96.81
+    },
+    {
+      "date": "2026-09-26 22:50",
+      "accuracy": 96.53
+    },
+    {
+      "date": "2026-09-26 22:50",
+      "accuracy": 96.67
+    },
+    {
+      "date": "2026-09-26 22:50",
+      "accuracy": 97.3
+    },
+    {
+      "date": "2026-09-27 10:45",
       "accuracy": 96.81
     }
   ]

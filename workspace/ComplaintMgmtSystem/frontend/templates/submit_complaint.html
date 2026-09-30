@@ -1,61 +1,58 @@
 {% extends "base.html" %}
 {% block title %}Submit Complaint — Complainify{% endblock %}
 {% block content %}
-<div class="min-h-screen flex flex-col">
-<header class="w-full bg-surface-white border-b border-outline-variant shadow-sm">
-<nav class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-<div class="flex items-center gap-2">
-<a href="{{ url_for('dashboard_redirect') }}" class="flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">gavel</span></span><span class="text-xl font-bold text-primary tracking-tight">Complainify</span></a>
+<main class="auth aurora">
+<a class="auth__back" href="{{ url_for('index') }}">
+<span class="material-symbols-outlined icon-sm">arrow_back</span> Back to home
+</a>
+<div class="auth__wrap auth__wrap--wide">
+<div class="auth__brand anim-fade-up">
+<a class="brand brand--lg" href="{{ url_for('index') }}">
+<span class="brand__mark"><span class="material-symbols-outlined">gavel</span></span>
+<span>Complainify</span>
+</a>
+<span class="eyebrow eyebrow--ai"><span class="material-symbols-outlined icon-sm">rate_review</span>Complaint Portal</span>
 </div>
-<div class="flex items-center gap-4">
-{% if session.get('user_id') %}
-<a href="{{ url_for('student_dashboard') }}" class="text-sm font-semibold text-primary hover:opacity-80">Dashboard</a>
-<a href="{{ url_for('logout') }}" class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-90">Logout</a>
-{% else %}
-<a href="{{ url_for('student_login') }}" class="text-sm font-semibold text-primary hover:opacity-80">Login</a>
-<a href="{{ url_for('student_register') }}" class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-90">Sign Up</a>
-{% endif %}
+<section class="auth__card anim-fade-up anim-delay-1">
+<div class="auth__head">
+<h2>Submit a complaint</h2>
+<p class="muted text-sm">Describe your issue and we'll route it to the right department.</p>
 </div>
-</nav>
-</header>
-<main class="flex-1 flex items-center justify-center px-4 py-12">
-<div class="bg-surface-white w-full max-w-2xl rounded-xl border border-outline-variant overflow-hidden shadow-sm">
-<div class="p-8">
-<div class="mb-8 text-center">
-<h2 class="text-2xl font-semibold text-primary mb-2">Submit a Complaint</h2>
-<p class="text-base text-on-surface-variant">Describe your issue and we'll route it to the right department.</p>
-</div>
- <form method="POST" class="space-y-5" id="complaintForm" enctype="multipart/form-data">
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="auth__body">
+<form method="POST" class="stack stack--sm" id="complaintForm" enctype="multipart/form-data">
 {% if request.args.get('anonymous') %}
-<div class="sm:col-span-2 bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center gap-3">
-<span class="material-symbols-outlined text-yellow-600">incognito</span>
-<div><p class="text-sm font-semibold text-yellow-800">Filing Anonymously</p><p class="text-xs text-yellow-600">You will receive a tracking ID to check your complaint status.</p></div>
+<div class="form-message warning">
+<span class="material-symbols-outlined icon-sm">incognito</span>
+<b>Filing anonymously.</b> You will receive a tracking ID to check your complaint status.
 </div>
 {% else %}
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="fullname">Full Name</label>
-<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm" id="fullname" name="fullname" placeholder="Your name" type="text" value="{{ session.get('fullname', '') }}">
+<div class="field">
+<label class="field__label" for="fullname">Full Name</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">person</span>
+<input class="input" id="fullname" name="fullname" placeholder="Your name" type="text" value="{{ session.get('fullname', '') }}">
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="email">Email</label>
-<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm" id="email" name="email" placeholder="your@email.com" type="text" value="{{ session.get('email', '') }}">
+</div>
+<div class="field">
+<label class="field__label" for="email">Email</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">mail</span>
+<input class="input" id="email" name="email" placeholder="your@email.com" type="text" value="{{ session.get('email', '') }}">
+</div>
 </div>
 {% endif %}
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="college">College / Faculty</label>
-<select class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm" id="college" name="college">
+<div class="field">
+<label class="field__label" for="college">College / Faculty</label>
+<select class="select" id="college" name="college">
 <option value="">Select your college</option>
 {% for c in colleges %}
 <option value="{{ c }}" {% if session.get('college') == c %}selected{% endif %}>{{ c }}</option>
 {% endfor %}
 </select>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="category">Category</label>
-<select class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm" id="category" name="category">
+<div class="field">
+<label class="field__label" for="category">Category</label>
+<select class="select" id="category" name="category">
 <option value="auto" selected>Auto-detect (AI)</option>
 <option value="Academics">Academics</option>
 <option value="Hostels">Hostels</option>
@@ -69,34 +66,49 @@
 <option value="Library">Library</option>
 <option value="Canteen">Canteen</option>
 <option value="Other">Other</option>
- </select>
-<p class="text-[11px] text-on-surface-variant mt-1">Choose "Auto-detect" to let our AI classify your complaint.</p>
+</select>
+<p class="field__hint">Choose "Auto-detect" to let our AI classify your complaint.</p>
+</div>
+<div class="field">
+<label class="field__label" for="subject">Subject</label>
+<div class="input-icon">
+<span class="material-symbols-outlined">subject</span>
+<input class="input" id="subject" name="subject" placeholder="Brief title of your complaint" type="text">
 </div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="subject">Subject</label>
-<input class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm" id="subject" name="subject" placeholder="Brief title of your complaint" type="text">
+<div class="field">
+<div class="field__row">
+<label class="field__label" for="description">Description</label>
+<div class="row">
+<span id="micStatus" class="text-xs muted"></span>
+<button type="button" id="micBtn" onclick="toggleMic()" class="btn btn--primary btn--sm" title="Dictate your complaint"><span class="material-symbols-outlined icon-sm">mic</span> Dictate</button>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="description">Description</label>
-<textarea class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-sm min-h-[120px]" id="description" name="description" placeholder="Provide detailed information about your complaint..." oninput="previewCategory(this.value)"></textarea>
-<div id="aiPreview" class="hidden mt-2 p-3 rounded-lg text-xs"></div>
-<div id="similarComplaints" class="hidden mt-2 p-3 rounded-lg text-xs"></div>
 </div>
-<div class="space-y-1.5">
-<label class="block text-sm font-medium text-on-surface" for="student_attachment">Attach File (optional)</label>
-<div class="flex items-center gap-2">
-<input type="file" id="student_attachment" name="student_attachment" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:brightness-110" onchange="showFile(this)">
-<button type="button" id="removeFileBtn" class="hidden px-3 py-2 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200 transition-colors" onclick="removeFile()"><span class="material-symbols-outlined text-sm">close</span></button>
+<textarea class="textarea" id="description" name="description" placeholder="Provide detailed information about your complaint..." oninput="previewCategory(this.value)"></textarea>
+<p id="micInterim" class="hidden text-xs muted mt-1"></p>
+<div id="aiPreview" class="hidden mt-2"></div>
+<div id="aiMeta" class="hidden mt-2"></div>
+<div id="similarComplaints" class="hidden mt-2"></div>
 </div>
-<div id="fileInfo" class="text-xs text-gray-400 mt-1"></div>
+<div class="field">
+<label class="field__label" for="student_attachment">Attach File (optional)</label>
+<div class="row">
+<input type="file" id="student_attachment" name="student_attachment" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" class="input" onchange="showFile(this)">
+<button type="button" id="removeFileBtn" class="hidden btn btn--danger btn--sm" onclick="removeFile()"><span class="material-symbols-outlined icon-sm">close</span></button>
 </div>
-<button class="w-full bg-primary text-on-primary text-sm font-semibold py-3.5 rounded-lg active:scale-95 transition-all shadow-sm hover:brightness-110" type="submit">Submit Complaint</button>
+<div id="fileInfo" class="text-xs muted mt-1"></div>
+</div>
+<button class="btn btn--primary btn--lg btn--block mt-2" type="submit">
+<span class="material-symbols-outlined icon-sm">send</span> Submit Complaint
+</button>
 </form>
 </div>
+</section>
+<p class="auth__legal">
+Track an existing case from the <a class="link" href="{{ url_for('track_complaint') }}">complaint tracker</a> — no sign-in required.
+</p>
 </div>
 </main>
-</div>
 <script>
 let debounceTimer;
 
@@ -120,7 +132,8 @@ function previewCategory(text) {
 clearTimeout(debounceTimer);
 const preview = document.getElementById('aiPreview');
 const similar = document.getElementById('similarComplaints');
-if (text.trim().length < 20) { preview.classList.add('hidden'); similar.classList.add('hidden'); return; }
+const meta = document.getElementById('aiMeta');
+if (text.trim().length < 20) { preview.classList.add('hidden'); similar.classList.add('hidden'); meta.classList.add('hidden'); return; }
 debounceTimer = setTimeout(() => {
 fetch('{{ url_for("api_predict_top3") }}', {
 method: 'POST',
@@ -143,8 +156,107 @@ fetch('/api/detect-anomaly', {method:'POST',headers:{'Content-Type':'application
 preview.innerHTML = html;
 }
 }).catch(() => {});
+fetch('{{ url_for("api_analyze") }}', {
+method: 'POST',
+headers: {'Content-Type': 'application/json'},
+body: JSON.stringify({text: text})
+}).then(r => r.json()).then(a => {
+if (a.sentiment) {
+meta.classList.remove('hidden');
+meta.className = 'mt-2 p-3 rounded-lg text-xs bg-green-50 text-green-800 border border-green-100';
+const sentimentColors = {Negative: 'bg-red-500', Neutral: 'bg-gray-400', Positive: 'bg-green-500'};
+const priorityColors = {High: 'bg-red-500', Medium: 'bg-yellow-400', Low: 'bg-green-500'};
+const priorityWidth = {High: 100, Medium: 66, Low: 0};
+const sentWidth = Math.round(((a.sentiment_score + 1) / 2) * 100);
+meta.innerHTML = '<div class="font-semibold mb-2">AI Analysis:</div>' +
+'<div class="flex items-center gap-2 mb-1"><span class="w-20 text-right text-green-800 font-medium">Sentiment</span><div class="flex-1 bg-gray-200 h-4 rounded-full overflow-hidden"><div class="' + sentimentColors[a.sentiment] + ' h-full rounded-full" style="width:' + sentWidth + '%"></div></div><span class="w-24 text-green-800">' + a.sentiment + ' (' + sentWidth + '%)</span></div>' +
+'<div class="flex items-center gap-2 mb-1"><span class="w-20 text-right text-green-800 font-medium">Priority</span><div class="flex-1 bg-gray-200 h-4 rounded-full overflow-hidden"><div class="' + priorityColors[a.priority] + ' h-full rounded-full" style="width:' + priorityWidth[a.priority] + '%"></div></div><span class="w-24 text-green-800">' + a.priority + '</span></div>' +
+'<div class="mt-1 pt-1 border-t border-green-200 text-green-700">Reason: ' + a.priority_reason + '</div>';
+}
+}).catch(() => {});
 fetch('/api/similar-complaints', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(r=>r.json()).then(d=>{if(d.similar&&d.similar.length){similar.classList.remove('hidden');similar.className='mt-2 p-3 rounded-lg text-xs bg-purple-50 text-purple-700 border border-purple-100';let sh='<div class="font-semibold mb-1">Similar resolved complaints:</div>';d.similar.forEach(s=>{sh+='<div class="flex justify-between"><span>'+s.subject.substring(0,60)+'</span><span class="text-purple-400">sim: '+s.similarity+'</span></div>'});similar.innerHTML=sh}}).catch(()=>{});
 }, 500);
+}
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const micBtn = document.getElementById('micBtn');
+const micStatus = document.getElementById('micStatus');
+const micInterim = document.getElementById('micInterim');
+const descInput = document.getElementById('description');
+let recognition = null;
+let recording = false;
+let fatal = false;
+
+if (!SR) {
+micBtn.disabled = true;
+micBtn.className = 'btn btn--sm is-disabled';
+micStatus.textContent = 'Speech input needs Chrome or Edge';
+} else {
+recognition = new SR();
+recognition.continuous = true;
+recognition.interimResults = true;
+recognition.lang = 'en-US';
+recognition.onresult = (e) => {
+let interim = '';
+for (let i = e.resultIndex; i < e.results.length; i++) {
+const r = e.results[i];
+if (r.isFinal) {
+const words = r[0].transcript.trim();
+if (words) {
+descInput.value = (descInput.value.trim() ? descInput.value.trim() + ' ' : '') + words;
+previewCategory(descInput.value);
+}
+} else interim += r[0].transcript;
+}
+micInterim.textContent = interim;
+};
+recognition.onerror = (e) => { micStatus.textContent = micErrorMsg(e.error); };
+recognition.onend = () => {
+if (recording) { try { recognition.start(); } catch (_) { resetMicUI(); } }
+else resetMicUI();
+};
+}
+
+function toggleMic() {
+if (!SR) return;
+if (recording) stopMic();
+else startMic();
+}
+
+function startMic() {
+recording = true;
+fatal = false;
+micBtn.className = 'btn btn--danger btn--sm';
+micBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">stop</span> Stop';
+micStatus.textContent = 'Listening — speak now';
+micInterim.classList.remove('hidden');
+try { recognition.start(); } catch (_) { }
+}
+
+function stopMic() {
+recording = false;
+try { recognition.stop(); } catch (_) { }
+resetMicUI();
+}
+
+function resetMicUI() {
+micBtn.className = 'btn btn--primary btn--sm';
+micBtn.innerHTML = '<span class="material-symbols-outlined icon-sm">mic</span> Dictate';
+micInterim.classList.add('hidden');
+micInterim.textContent = '';
+if (!fatal) micStatus.textContent = '';
+}
+
+function micErrorMsg(code) {
+switch (code) {
+case 'not-allowed':
+case 'service-not-allowed': fatal = true; return 'Mic access denied — allow the microphone and try again';
+case 'audio-capture': fatal = true; return 'No microphone found';
+case 'language-not-supported': fatal = true; return 'Language not supported';
+case 'network': return 'Speech service unreachable — check your internet';
+case 'no-speech': return 'No speech heard — say something and try again';
+default: return 'Speech error: ' + code;
+}
 }
 </script>
 {% endblock %}

@@ -1,68 +1,49 @@
-import re
-
 import env
-
-_RISK_PATTERNS = re.compile(
-    r'\b(harass\w*|stole|theft|robbery|threaten\w*|unsafe|abuse|assault|'
-    r'unhygienic|filthy|spoiled|rotten|stale\s+food|overcharg\w*|leak\w*|'
-    r'no\s+(?:response|reply|action|update)|never\s+(?:fixed|resolved|addressed))\b',
-    re.IGNORECASE
-)
-
-_URGENT_PATTERNS = re.compile(
-    r'\b(not\s+work(?:ing)?|doesn.?t\s+work|dont\s+work|wont\s+work|'
-    r'broken|crack\w*|malfunction\w*|delay(?:s|ed)?|urgent|asap|'
-    r'immediately|emergency|deadline|exam|fees?\s+confirm)\b',
-    re.IGNORECASE
-)
-
-_APPRECIATION = re.compile(
-    r'\b(thank|appreciate|grateful|excellent|wonderful|amazing|great|'
-    r'fixed|resolved|solved|helpful|happy|satisfied|delighted|impressed)\b',
-    re.IGNORECASE
-)
 
 # ML priority is used when its confidence is at least this high.
 ML_CONFIDENCE = 0.55
 
+# Deterministic ground-truth vocabulary (mirror of
+# generate_sentiment_priority_data.py assign_priority): a negative-text is
+# 'High' only when one of these markers appears anywhere in the sentence.
+HIGH_HINTS = (
+    'remains completely unavailable', 'has never been repaired',
+    'stopped working again', 'is out of order since morning',
+    'nothing has been done yet', 'no one from the office follows up',
+    'students have already reported it',
+    'this is a serious problem', 'it can no longer be ignored',
+    'warning signs were clear',
+    'emergency', 'danger', 'unsafe', 'stale', 'unhygienic', 'harass',
+    'theft', 'leak', 'no water', 'life threatening', 'injury',
+)
+
+# Neutral texts carrying a deadline/window/timeline/form/schedule noun are
+# 'Medium'; everything else neutral is 'Low'.
+NEU_MEDIUM_HINTS = ('deadline', 'window', 'timeline', 'form', 'schedule')
+
 
 def compute_priority_rules(text, sentiment_label, sentiment_score, anomaly=None):
-    """Weighted, explainable priority score (pure rules, no ML).
+    """Mirror of the dataset's deterministic ground-truth rule.
 
-    Returns (priority, score, reason).
-    score is clamped to >= 0. High >= 3, Medium 1-2, Low <= 0.
+    Priority is a text-only function: positive -> Low; negative -> High when
+    a high-risk marker appears, otherwise Medium; neutral -> Medium when a
+    deadline/window/timeline/form/schedule noun appears, otherwise Low.
+
+    Returns (priority, score, reason). score keeps the same scale as the ML
+    path (High = 3, Medium = 2, Low = 0).
     """
-    score = 0
-    reasons = []
-
-    if sentiment_label == 'Negative' and sentiment_score <= -0.3:
-        score += 2
-        reasons.append('strong negative tone')
-    elif sentiment_label == 'Negative':
-        score += 1
-        reasons.append('negative tone')
-
-    if _RISK_PATTERNS.search(text):
-        score += 2
-        reasons.append('high-risk wording')
-
-    if _URGENT_PATTERNS.search(text):
-        score += 1
-        reasons.append('urgent issue')
-
+    low = ' ' + text.lower() + ' '
     if anomaly and anomaly.get('is_anomaly'):
-        score += 2
-        reasons.append('flagged as anomalous')
-
-    if sentiment_label == 'Positive' and _APPRECIATION.search(text):
-        score -= 1
-        reasons.append('positive tone')
-
-    score = max(score, 0)
-    priority = 'High' if score >= 3 else ('Medium' if score >= 1 else 'Low')
-    reason = ', '.join(reasons) if reasons else 'baseline'
-
-    return priority, score, reason
+        return 'High', 3, 'flagged as anomalous'
+    if sentiment_label == 'Positive':
+        return 'Low', 0, 'positive tone'
+    if sentiment_label == 'Negative':
+        if any(h in low for h in HIGH_HINTS):
+            return 'High', 3, 'high-risk marker detected'
+        return 'Medium', 2, 'strong complaint without high-risk marker'
+    if any(m in low for m in NEU_MEDIUM_HINTS):
+        return 'Medium', 2, 'deadline/window/timeline/schedule marker'
+    return 'Low', 0, 'neutral baseline'
 
 
 # Representative weighted score for each ML priority class, so the app's

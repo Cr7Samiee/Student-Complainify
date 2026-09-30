@@ -69,7 +69,7 @@ async def call_tool(name: str, arguments: dict):
         return [TextContent(type="text", text=json.dumps(data, indent=2, default=str))]
     elif name == "get_recent_complaints":
         conn = get_db(); cur = conn.cursor()
-        cur.execute(f"SELECT ticket_id, fullname, category, priority, status, sentiment, subject, date_format(created_at,'%%d %%b %%Y') created_at FROM complaints ORDER BY created_at DESC LIMIT {arguments.get('limit', 10)}")
+        cur.execute(f"SELECT ticket_id, fullname, category, priority, status, sentiment, subject, date_format(created_at,'%d %b %Y') created_at FROM complaints ORDER BY created_at DESC LIMIT {arguments.get('limit', 10)}")
         rows = cur.fetchall(); cur.close(); conn.close()
         return [TextContent(type="text", text=json.dumps(rows, indent=2, default=str))]
     elif name == "predict_top3_categories":

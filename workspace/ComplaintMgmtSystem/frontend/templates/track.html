@@ -22,19 +22,19 @@
 <main class="section section--tight aurora">
 <div class="container container--narrow stack">
 
-<section class="card card--pad center anim-fade-up">
-<span class="icon-badge icon-badge--ai icon-badge--center"><span class="material-symbols-outlined">search</span></span>
-<h1 class="text-xl mt-4">Track your complaint</h1>
-<p class="muted text-sm mt-1">Enter the ticket ID from your confirmation email to view its live status.</p>
-<form method="POST" class="stack stack--sm mt-5">
-<div class="field" style="text-align:left">
+<section class="card form-card anim-fade-up">
+<span class="icon-badge icon-badge--ai icon-badge--sm icon-badge--center"><span class="material-symbols-outlined">search</span></span>
+<h1 class="form-card__title">Track your complaint</h1>
+<p>Enter the ticket ID from your confirmation email to see its live status.</p>
+<form method="POST" class="stack stack--sm">
+<div class="field">
 <label class="field__label" for="ticket_id">Ticket ID</label>
 <div class="input-icon">
 <span class="material-symbols-outlined">confirmation_number</span>
 <input class="input" id="ticket_id" name="ticket_id" type="text" placeholder="e.g. CMP-1024" autocomplete="off" required>
 </div>
 </div>
-<button class="btn btn--primary btn--lg btn--block" type="submit">
+<button class="btn btn--primary btn--block" type="submit">
 <span class="material-symbols-outlined icon-sm">search</span> Track now
 </button>
 </form>
@@ -51,7 +51,7 @@
 <section class="card card--pad anim-fade-up anim-delay-1">
 <div class="between">
 <div>
-<h2 class="row">
+<h2 class="row text-xl">
 <span>{{ result.ticket_id }}</span>
 <button class="btn btn--outline btn--sm" type="button" onclick="copyTicketId(this)" data-copy="{{ result.ticket_id }}">
 <span class="material-symbols-outlined icon-sm">content_copy</span>Copy

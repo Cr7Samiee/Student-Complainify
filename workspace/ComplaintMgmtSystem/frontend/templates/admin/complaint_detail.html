@@ -14,12 +14,13 @@
 <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">dashboard</span>Dashboard</a>
 <a href="{{ url_for('admin_complaints') }}" class="flex items-center gap-3 bg-[#d32f2f]/20 text-white rounded-lg px-4 py-3 text-sm font-medium border-l-2 border-[#d32f2f]"><span class="material-symbols-outlined text-sm">assignment</span>All Complaints</a>
 <a href="{{ url_for('track_complaint') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">search</span>Track Status</a>
+<a href="{{ url_for('admin_audit_logs') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">history</span>Audit Logs</a>
+<a href="{{ url_for('admin_users') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">people</span>Users</a>
 <a href="{{ url_for('admin_training_logs') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">model_training</span>Training</a>
 <a href="{{ url_for('admin_analysis') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">grid_view</span>Sentiment x Priority</a>
-                    <a href="{{ url_for('admin_report') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">bar_chart</span>Reports</a>
+<a href="{{ url_for('admin_report') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">bar_chart</span>Reports</a>
 </nav>
 <div class="px-2 space-y-0.5 border-t border-white/10 pt-3 mt-2 mx-2">
-<a href="{{ url_for('index') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">arrow_back</span>Back to Home</a>
 <a href="{{ url_for('admin_settings') }}" class="flex items-center gap-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 text-sm transition-all"><span class="material-symbols-outlined text-sm">settings</span>Settings</a>
 <a href="{{ url_for('logout') }}" class="flex items-center gap-3 text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg px-4 py-3 text-sm transition-all mt-1"><span class="material-symbols-outlined text-sm">logout</span>Sign Out</a>
 </div>
@@ -42,7 +43,7 @@
 <div><span class="text-gray-400 text-xs block">College</span><span class="font-semibold text-[#0a1628]">{{ c.college or '-' }}</span></div>
 <div><span class="text-gray-400 text-xs block">Email</span><span class="font-semibold text-[#0a1628]">{{ c.email }}</span></div>
 <div><span class="text-gray-400 text-xs block">Category</span><span class="font-semibold text-[#0a1628]">{{ c.category }}</span></div>
-<div><span class="text-gray-400 text-xs block">Priority</span><span class="font-semibold {% if c.priority == 'High' %}text-red-600{% elif c.priority == 'Medium' %}text-amber-600{% else %}text-gray-500{% endif %}">{{ c.priority }}{% if c.priority_score is not none %} <span class="text-gray-400 text-xs font-normal">(score {{ c.priority_score }})</span>{% endif %}</span>{% if c.priority_reason %}<p class="text-[10px] text-gray-400 mt-0.5">{{ c.priority_reason }}</p>{% endif %}</div>
+<div><span class="text-gray-400 text-xs block">Priority</span><span class="font-semibold {% if c.priority == 'High' %}text-red-600{% elif c.priority == 'Medium' %}text-amber-600{% else %}text-gray-500{% endif %}">{{ c.priority }}{% if c.priority_score is not none %} <span class="text-gray-400 text-xs font-normal">(score {{ c.priority_score }})</span>{% endif %}</span>{% if c.priority_reason %}<p class="text-[10px] text-gray-500 mt-0.5">{{ c.priority_reason }}</p>{% endif %}</div>
 <div><span class="text-gray-400 text-xs block">Sentiment</span><span class="font-semibold {% if c.sentiment == 'Positive' %}text-green-600{% elif c.sentiment == 'Negative' %}text-red-600{% else %}text-gray-500{% endif %}">{{ c.sentiment or 'Neutral' }}</span></div>
 <div><span class="text-gray-400 text-xs block">Submitted</span><span class="font-semibold text-[#0a1628]">{{ c.created }}</span></div>
 <div><span class="text-gray-400 text-xs block">Validated</span><span class="font-semibold {% if c.validated %}text-green-600{% else %}text-amber-600{% endif %}">{% if c.validated %}Yes{% else %}No{% endif %}</span></div>
@@ -57,18 +58,18 @@
 <div class="space-y-4">
 <div class="flex items-start gap-3">
 <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-sm text-green-600">check_circle</span></div>
-<div><p class="text-sm font-semibold text-[#0a1628]">Submitted</p><p class="text-xs text-gray-400">{{ c.created }}</p></div>
+<div><p class="text-sm font-semibold text-[#0a1628]">Submitted</p><p class="text-xs text-gray-500">{{ c.created }}</p></div>
 </div>
 {% if c.assigned_at %}
 <div class="flex items-start gap-3">
 <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-sm text-blue-600">assignment_ind</span></div>
-<div><p class="text-sm font-semibold text-[#0a1628]">Assigned to {{ c.assigned_to }}</p><p class="text-xs text-gray-400">{{ c.assigned_date }}</p></div>
+<div><p class="text-sm font-semibold text-[#0a1628]">Assigned to {{ c.assigned_to }}</p><p class="text-xs text-gray-500">{{ c.assigned_date }}</p></div>
 </div>
 {% endif %}
 {% if c.resolved_at %}
 <div class="flex items-start gap-3">
 <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-sm text-green-600">task_alt</span></div>
-<div><p class="text-sm font-semibold text-[#0a1628]">Resolved</p><p class="text-xs text-gray-400">{{ c.resolved_date }}</p></div>
+<div><p class="text-sm font-semibold text-[#0a1628]">Resolved</p><p class="text-xs text-gray-500">{{ c.resolved_date }}</p></div>
 </div>
 {% endif %}
 {% if c.admin_notes %}
@@ -145,7 +146,7 @@
 {% for comment in comments %}
 <div class="flex items-start gap-3">
 <div class="w-8 h-8 rounded-full {% if comment.role == 'admin' %}bg-[#d32f2f]/10{% else %}bg-blue-100{% endif %} flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-sm {% if comment.role == 'admin' %}text-[#d32f2f]{% else %}text-blue-600{% endif %}">person</span></div>
-<div><p class="text-xs font-semibold text-[#0a1628]">{{ comment.fullname }} <span class="text-[10px] text-gray-400 font-normal">({{ comment.role }})</span></p><p class="text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2 mt-1 inline-block">{{ comment.message }}</p><p class="text-[10px] text-gray-400 mt-1">{{ comment.created_at }}</p></div>
+<div><p class="text-xs font-semibold text-[#0a1628]">{{ comment.fullname }} <span class="text-[10px] text-gray-500 font-normal">({{ comment.role }})</span></p><p class="text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2 mt-1 inline-block">{{ comment.message }}</p><p class="text-[10px] text-gray-500 mt-1">{{ comment.created_at }}</p></div>
 </div>
 {% else %}
 <p class="text-sm text-gray-500 text-center py-4">No comments yet.</p>
